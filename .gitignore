@@ -1,0 +1,29 @@
+.DS_Store
+/node_modules/
+
+# React Router
+/.react-router/
+/build/
+
+# Vercel
+/.vercel/
+.vscode/
+*.env
+*.env.example
+*.env.local
+*.env.staging
+*.env.prod
+*.env.dev
+*.env.preview
+.vercel
+IGNORED/
+
+# Test coverage
+/coverage/
+
+.env.local
+.review/
+
+# Local-only docs and AI tooling (keep on disk, don't ship)
+/.claude/
+/DOCS/

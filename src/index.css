@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Non-inline so utilities resolve brand tokens via var() */
+@theme {
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    --font-display: "Fraunces", Georgia, serif;
+
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    --color-brand-bg: #faf8f5;
+    --color-brand-surface: #ffffff;
+    --color-brand-surface-2: #f0ede6;
+    --color-brand-border: rgba(0, 0, 0, 0.08);
+    --color-brand-text: #222222;
+    --color-brand-text-muted: #5a4a3a;
+
+    --color-brand-accent: #b87333;
+    --color-brand-accent-muted: #8f5a27;
+    --color-brand-destructive: #c13515;
+
+    --color-brand-accent-bright: #d18b4a;
+
+    --color-glow-1: rgba(184, 115, 51, 0.2);
+    --color-glow-2: rgba(184, 115, 51, 0.15);
+    --color-glow-3: rgba(184, 115, 51, 0.1);
+
+    --color-brand-accent-bright-subtle: color-mix(in srgb, var(--color-brand-accent-bright) 10%, transparent);
+    --color-brand-accent-muted-subtle: color-mix(in srgb, var(--color-brand-accent-muted) 10%, transparent);
+
+    --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+
+    --color-background: var(--color-brand-bg);
+    --color-foreground: var(--color-brand-text);
+    --color-card: var(--color-brand-surface);
+    --color-card-foreground: var(--color-brand-text);
+    --color-popover: var(--color-brand-surface);
+    --color-popover-foreground: var(--color-brand-text);
+    --color-primary: var(--color-brand-accent);
+    --color-primary-foreground: #faf8f5;
+    --color-secondary: var(--color-brand-surface-2);
+    --color-secondary-foreground: var(--color-brand-text);
+    --color-muted: var(--color-brand-surface-2);
+    --color-muted-foreground: var(--color-brand-text-muted);
+    --color-accent: var(--color-brand-surface-2);
+    --color-accent-foreground: var(--color-brand-text);
+    --color-destructive: var(--color-brand-destructive);
+    --color-destructive-foreground: #ffffff;
+    --color-border: var(--color-brand-border);
+    --color-input: var(--color-brand-surface-2);
+    --color-ring: var(--color-brand-accent);
+    --color-chart-1: var(--color-brand-accent);
+    --color-chart-2: var(--color-brand-accent-bright);
+    --color-chart-3: var(--color-brand-accent-muted);
+    --color-chart-4: #4a7c59;
+    --color-chart-5: #c13515;
+    --color-sidebar: var(--color-brand-surface);
+    --color-sidebar-foreground: var(--color-brand-text);
+    --color-sidebar-primary: var(--color-brand-accent);
+    --color-sidebar-primary-foreground: #faf8f5;
+    --color-sidebar-accent: var(--color-brand-surface-2);
+    --color-sidebar-accent-foreground: var(--color-brand-text);
+    --color-sidebar-border: var(--color-brand-border);
+    --color-sidebar-ring: var(--color-brand-accent);
+}
+
+:root {
+    --radius: 0.75rem;
+
+    --background: var(--color-background);
+    --foreground: var(--color-foreground);
+    --card: var(--color-card);
+    --card-foreground: var(--color-card-foreground);
+    --popover: var(--color-popover);
+    --popover-foreground: var(--color-popover-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: var(--color-primary-foreground);
+    --secondary: var(--color-secondary);
+    --secondary-foreground: var(--color-secondary-foreground);
+    --muted: var(--color-muted);
+    --muted-foreground: var(--color-muted-foreground);
+    --accent: var(--color-accent);
+    --accent-foreground: var(--color-accent-foreground);
+    --destructive: var(--color-destructive);
+    --destructive-foreground: var(--color-destructive-foreground);
+    --border: var(--color-border);
+    --input: var(--color-input);
+    --ring: var(--color-ring);
+    --chart-1: var(--color-chart-1);
+    --chart-2: var(--color-chart-2);
+    --chart-3: var(--color-chart-3);
+    --chart-4: var(--color-chart-4);
+    --chart-5: var(--color-chart-5);
+    --sidebar: var(--color-sidebar);
+    --sidebar-foreground: var(--color-sidebar-foreground);
+    --sidebar-primary: var(--color-sidebar-primary);
+    --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+    --sidebar-accent: var(--color-sidebar-accent);
+    --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+    --sidebar-border: var(--color-sidebar-border);
+    --sidebar-ring: var(--color-sidebar-ring);
+}
+
+@layer base {
+    * {
+        @apply border-border/50 outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground font-sans;
+    }
+}
+
+@keyframes pulse-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 12px var(--color-glow-1),
+            0 0 24px var(--color-glow-1);
+    }
+    50% {
+        box-shadow:
+            0 0 18px var(--color-glow-1),
+            0 0 36px var(--color-glow-2);
+    }
+}
+
+@keyframes gradient-shift {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes demo-scale-up {
+    from {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes demo-scale-down {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+}
+
+.btn-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.underline-gradient {
+    background-image: linear-gradient(
+        90deg,
+        var(--color-brand-accent),
+        var(--color-brand-accent-bright)
+    );
+    background-size: 100% 2px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+}
+
+.text-gradient {
+    background: linear-gradient(
+        135deg,
+        var(--color-brand-accent-muted) 0%,
+        var(--color-brand-accent) 50%,
+        var(--color-brand-accent-bright) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.bg-gradient-brand {
+    background: linear-gradient(
+        135deg,
+        var(--color-brand-accent) 0%,
+        var(--color-brand-accent-bright) 100%
+    );
+}
+
+.bg-gradient-brand-subtle {
+    background: linear-gradient(
+        135deg,
+        var(--color-brand-accent-bright-subtle) 0%,
+        var(--color-brand-accent-muted-subtle) 100%
+    );
+}
+
+.border-gradient {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--color-brand-surface), var(--color-brand-surface)) padding-box,
+        linear-gradient(135deg, var(--color-brand-accent), var(--color-brand-accent-bright)) border-box;
+}
+
+/* Three-layer warm shadow (Airbnb-style, warm RGB like candlelight). */
+.card-glow {
+    box-shadow:
+        rgba(20, 10, 0, 0.03) 0px 0px 0px 1px,
+        rgba(20, 10, 0, 0.04) 0px 2px 6px,
+        rgba(20, 10, 0, 0.08) 0px 4px 8px;
+}
+
+.card-glow-hover {
+    transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.card-glow-hover:hover {
+    box-shadow:
+        rgba(20, 10, 0, 0.04) 0px 0px 0px 1px,
+        rgba(20, 10, 0, 0.06) 0px 4px 10px,
+        rgba(20, 10, 0, 0.12) 0px 8px 16px;
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-glow-hover {
+        transition: none;
+    }
+    .card-glow-hover:hover {
+        transform: none;
+    }
+}
+
+/* react-phone-number-input internal elements can't be targeted with utilities */
+.phone-input .PhoneInputCountry {
+    margin-right: 0.5rem;
+}
+
+.phone-input .PhoneInputInput {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-brand-text);
+    font-size: inherit;
+    width: 100%;
+}
+
+.phone-input .PhoneInputInput::placeholder {
+    color: var(--color-brand-text-muted);
+}
+
+.phone-input .PhoneInputCountrySelect {
+    color: var(--color-brand-text);
+    background: var(--color-brand-surface);
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
