@@ -808,42 +808,77 @@ export default function HomeIndex() {
                         </Reveal>
                     </div>
                     <div className="lg:col-span-9 lg:col-start-4">
+                        {/* Setup line — small, sets up the stat block below. */}
                         <Reveal slow>
                             <p
-                                className="font-display font-medium leading-[1.05] tracking-[-0.02em] mb-12"
-                                style={{ fontSize: "clamp(2rem, 5vw, 4.25rem)" }}
+                                className="font-display font-medium leading-[1.05] tracking-[-0.02em] mb-16 md:mb-20"
+                                style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
                             >
-                                You know what you want{" "}
                                 <em className="italic font-medium text-[color:var(--color-lime)]">
-                                    before you even open
+                                    Before you even open
                                 </em>{" "}
-                                Instamart.
+                                Instamart, you already know what you want.
                             </p>
                         </Reveal>
 
-                        <Reveal slow delay={320}>
-                            <p className="font-display italic text-2xl md:text-3xl leading-snug text-[color:var(--color-paper)]/70 mb-12 pl-6 border-l-2 border-[color:var(--color-lime)]/60 max-w-2xl">
-                                But it still takes{" "}
-                                <span className="not-italic font-semibold text-[color:var(--color-paper)]">
-                                    5 minutes
-                                </span>{" "}
-                                to build the cart.
-                            </p>
-                        </Reveal>
+                        {/* Stat block — two big numerical headlines side by
+                            side with an em-dash connector. The visual punch
+                            of the section: 5 minutes vs. one message,
+                            stripped to the numerals. */}
+                        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-10 md:gap-8 items-start max-w-[820px]">
+                            <Reveal slow delay={320}>
+                                <div>
+                                    <div className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-paper)]/55 mb-3">
+                                        Building the cart yourself
+                                    </div>
+                                    <div
+                                        className="font-display font-medium leading-[0.9] tracking-[-0.04em] text-[color:var(--color-paper)]/55"
+                                        style={{ fontSize: "clamp(4rem, 10vw, 7rem)" }}
+                                    >
+                                        5
+                                        <span
+                                            className="font-mono uppercase tracking-[0.1em] ml-2 align-baseline"
+                                            style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)" }}
+                                        >
+                                            min
+                                        </span>
+                                    </div>
+                                </div>
+                            </Reveal>
 
-                        <Reveal slow delay={640}>
-                            <p
-                                className="font-display leading-[1.1] tracking-[-0.02em]"
-                                style={{ fontSize: "clamp(1.75rem, 4vw, 3.25rem)" }}
-                            >
-                                With <em className="italic font-medium">Laziggy</em>, you
-                                can do it in{" "}
-                                <em className="italic font-medium text-[color:var(--color-lime)]">
-                                    one message
-                                </em>
-                                .
-                            </p>
-                        </Reveal>
+                            {/* Connector — em-dash arrow on desktop, vertical
+                                pipe on mobile (hidden on mobile actually,
+                                stacking is cleaner without it) */}
+                            <Reveal slow delay={460}>
+                                <div
+                                    aria-hidden
+                                    className="hidden md:flex items-center justify-center pt-16 text-[color:var(--color-lime)]/70"
+                                    style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)" }}
+                                >
+                                    →
+                                </div>
+                            </Reveal>
+
+                            <Reveal slow delay={640}>
+                                <div>
+                                    <div className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-lime)] mb-3">
+                                        With Laziggy
+                                    </div>
+                                    <div
+                                        className="font-display font-medium leading-[0.9] tracking-[-0.04em] text-[color:var(--color-lime)]"
+                                        style={{ fontSize: "clamp(4rem, 10vw, 7rem)" }}
+                                    >
+                                        1
+                                        <span
+                                            className="font-mono uppercase tracking-[0.1em] ml-2 align-baseline text-[color:var(--color-lime)]"
+                                            style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)" }}
+                                        >
+                                            message
+                                        </span>
+                                    </div>
+                                </div>
+                            </Reveal>
+                        </div>
                     </div>
                 </div>
             </section>
