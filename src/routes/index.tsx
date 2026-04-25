@@ -9,7 +9,20 @@ export function meta() {
     ];
 }
 
-import { Play, Check, CheckCheck, Mic } from "lucide-react";
+import {
+    Play,
+    Check,
+    CheckCheck,
+    Mic,
+    ArrowLeft,
+    Phone,
+    Video,
+    MoreVertical,
+    Smile,
+    Paperclip,
+    Camera,
+    BadgeCheck,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { Reveal } from "@/client/components/ui/Reveal";
 
@@ -118,6 +131,435 @@ function WhatsAppCTA({
     );
 }
 
+// ─── iPhone shell ──────────────────────────────────────────────────────────
+//
+// iPhone Pro-style frame. Renders any children inside the screen. Aspect ratio
+// is locked to 9:19.5 (modern iPhone screen ratio) via the padding-bottom
+// trick, which works reliably across browsers — the `aspect-ratio` CSS
+// property is unreliable when flex children would otherwise push the box
+// taller. Side buttons are positioned in % so they scale with the frame.
+
+function IPhone({
+    children,
+    maxWidth = 300,
+    scale = 1,
+    className = "",
+    screenStyle,
+}: {
+    children: ReactNode;
+    /** Max rendered width in px. Height derives from the iPhone aspect ratio. */
+    maxWidth?: number;
+    /** Visual scale factor. Use this to shrink/grow the rendered phone without
+     *  changing its internal proportions (text remains the right size relative
+     *  to the phone). The layout box still reserves the un-scaled footprint. */
+    scale?: number;
+    className?: string;
+    /** Inline style applied to the inner screen container — useful for setting
+     *  font-family so it scopes to whatever the user puts on the screen. */
+    screenStyle?: React.CSSProperties;
+}) {
+    return (
+        <div
+            className={`relative mx-auto ${className}`}
+            style={{
+                width: "100%",
+                maxWidth: `${maxWidth}px`,
+                transform: scale === 1 ? undefined : `scale(${scale})`,
+                transformOrigin: "center",
+            }}
+        >
+            {/* Outer titanium bezel */}
+            <div
+                className="relative rounded-[44px] p-[3px]"
+                style={{
+                    background:
+                        "linear-gradient(145deg, #3a3a3c 0%, #1c1c1e 40%, #2c2c2e 100%)",
+                    boxShadow:
+                        "0 30px 60px -20px rgba(14,14,12,0.4), 0 12px 24px -10px rgba(14,14,12,0.25), inset 0 0 0 0.5px rgba(255,255,255,0.06)",
+                }}
+            >
+                {/* Side buttons — positioned in % so they scale with the frame.
+                    Anatomy: silenced switch + volume up + volume down on left,
+                    sleep/wake on right (slightly lower than the volume rocker). */}
+                <div
+                    aria-hidden
+                    className="absolute -left-[2px] w-[2px] rounded-l-sm"
+                    style={{ background: "#1c1c1e", top: "13%", height: "3.2%" }}
+                />
+                <div
+                    aria-hidden
+                    className="absolute -left-[2px] w-[2px] rounded-l-sm"
+                    style={{ background: "#1c1c1e", top: "19%", height: "5.5%" }}
+                />
+                <div
+                    aria-hidden
+                    className="absolute -left-[2px] w-[2px] rounded-l-sm"
+                    style={{ background: "#1c1c1e", top: "26%", height: "5.5%" }}
+                />
+                <div
+                    aria-hidden
+                    className="absolute -right-[2px] w-[2px] rounded-r-sm"
+                    style={{ background: "#1c1c1e", top: "20%", height: "8%" }}
+                />
+
+                {/* Inner screen — padding-bottom trick locks the aspect ratio
+                    universally (Safari has flex+aspect-ratio bugs). */}
+                <div
+                    className="relative rounded-[40px] overflow-hidden bg-black"
+                    style={{ paddingBottom: `${(19.5 / 9) * 100}%` }}
+                >
+                    <div
+                        className="absolute inset-0 flex flex-col"
+                        style={screenStyle}
+                    >
+                        {children}
+                    </div>
+
+                    {/* Dynamic Island — sits above content, on top of the screen. */}
+                    <div
+                        aria-hidden
+                        className="absolute top-[1.4%] left-1/2 -translate-x-1/2 w-[34%] h-[3.5%] rounded-full bg-black z-30"
+                        style={{ minHeight: "22px" }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── WhatsApp Business chat replica ────────────────────────────────────────
+//
+// Pixel-accurate replica of the modern (2023+) WhatsApp UI. Used as the hero
+// demo so users immediately recognise the channel.
+//
+// Color reference (modern WhatsApp light theme):
+//   header bg    #008069   (was #075E54 in the legacy theme)
+//   chat bg      #EFEAE2   (with the doodle pattern)
+//   outgoing     #D9FDD3   (pale mint, tail top-right)
+//   incoming     #FFFFFF   (tail top-left)
+//   read blue    #53BDEB   (double-tick when read)
+//   meta text    #667781   (timestamps, statuses)
+//   header text  #FFFFFF
+//
+// Font is system-ui to match what users actually see in WhatsApp on their
+// own device. The chat is wrapped in `wa-root` to scope the font override.
+
+const WA_OUTGOING = "#D9FDD3";
+const WA_INCOMING = "#FFFFFF";
+
+// The actual WhatsApp tail shape (extracted from WhatsApp Web's SVG).
+function WaTail({ side, color }: { side: "left" | "right"; color: string }) {
+    return (
+        <svg
+            width="8"
+            height="13"
+            viewBox="0 0 8 13"
+            className="absolute top-0"
+            style={{
+                [side === "right" ? "right" : "left"]: "-7px",
+                transform: side === "left" ? "scaleX(-1)" : undefined,
+            }}
+            aria-hidden
+        >
+            <path
+                d="M5.188 0H0v11.193l6.467-8.625C7.526 1.156 6.958 0 5.188 0z"
+                fill={color}
+            />
+        </svg>
+    );
+}
+
+function WaCheck({ read = true }: { read?: boolean }) {
+    return (
+        <CheckCheck
+            className="w-[15px] h-[15px] flex-shrink-0"
+            style={{ color: read ? "#53BDEB" : "#8696A0" }}
+        />
+    );
+}
+
+function WaMessage({
+    side,
+    children,
+    time,
+    read = true,
+    tight = false,
+}: {
+    side: "in" | "out";
+    children: ReactNode;
+    time: string;
+    read?: boolean;
+    tight?: boolean;
+}) {
+    const bg = side === "out" ? WA_OUTGOING : WA_INCOMING;
+    const radius =
+        side === "out"
+            ? "rounded-[7.5px] rounded-tr-[0]"
+            : "rounded-[7.5px] rounded-tl-[0]";
+    return (
+        <div className={`flex ${side === "out" ? "justify-end" : "justify-start"}`}>
+            <div
+                className={`relative max-w-[88%] ${radius} ${tight ? "px-1.5 pt-1.5 pb-1" : "px-2 pt-1.5 pb-1"}`}
+                style={{
+                    background: bg,
+                    boxShadow: "0 1px 0.5px rgba(11,20,26,0.13)",
+                }}
+            >
+                <WaTail side={side === "out" ? "right" : "left"} color={bg} />
+                <div className="text-[14.2px] leading-[19px] text-[#111B21] pr-[54px]">
+                    {children}
+                </div>
+                <div className="absolute right-[7px] bottom-[3px] flex items-center gap-1">
+                    <span className="text-[11px] leading-[15px] text-[#667781]">
+                        {time}
+                    </span>
+                    {side === "out" && <WaCheck read={read} />}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function WhatsAppDemo() {
+    return (
+        <IPhone
+            maxWidth={300}
+            scale={0.85}
+            screenStyle={{
+                fontFamily:
+                    'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            }}
+        >
+            {/* Status bar — wraps around the Dynamic Island */}
+                    <div
+                        className="relative flex items-center justify-between pt-[10px] pb-[4px] text-white text-[12px] font-semibold z-20"
+                        style={{ background: "#008069" }}
+                    >
+                        <span className="pl-6 pr-2">9:41</span>
+                        {/* spacer for the Dynamic Island */}
+                        <span className="w-[100px] flex-shrink-0" />
+                        <div className="flex items-center gap-1 pr-5 pl-2">
+                            {/* signal */}
+                            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden>
+                                <rect x="0" y="7" width="3" height="4" rx="0.5" />
+                                <rect x="4.5" y="5" width="3" height="6" rx="0.5" />
+                                <rect x="9" y="2.5" width="3" height="8.5" rx="0.5" />
+                                <rect x="13.5" y="0" width="3" height="11" rx="0.5" opacity="0.4" />
+                            </svg>
+                            {/* wifi */}
+                            <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" aria-hidden>
+                                <path d="M7.5 1C4.7 1 2.2 2 .3 3.7l1.4 1.4C3.3 3.7 5.3 2.9 7.5 2.9s4.2.8 5.8 2.2l1.4-1.4C12.8 2 10.3 1 7.5 1zm0 3.5c-1.9 0-3.6.7-4.9 1.8l1.4 1.4c1-.8 2.2-1.3 3.5-1.3s2.5.5 3.5 1.3l1.4-1.4C11.1 5.2 9.4 4.5 7.5 4.5zm0 3.5c-1 0-1.9.4-2.6 1L7.5 11l2.6-2c-.7-.6-1.6-1-2.6-1z" />
+                            </svg>
+                            {/* battery */}
+                            <svg width="25" height="11" viewBox="0 0 25 11" aria-hidden>
+                                <rect x="0.5" y="0.5" width="22" height="10" rx="2.5" fill="none" stroke="currentColor" opacity="0.5" />
+                                <rect x="2" y="2" width="19" height="7" rx="1" fill="currentColor" />
+                                <rect x="23" y="3.5" width="1.5" height="4" rx="0.5" fill="currentColor" opacity="0.5" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    {/* Header bar */}
+                <div
+                    className="flex items-center gap-3 px-3 py-2.5 text-white"
+                    style={{ background: "#008069" }}
+                >
+                    <ArrowLeft className="w-[22px] h-[22px] -mr-1" strokeWidth={2.2} />
+                    <div className="w-10 h-10 rounded-full bg-[#DFE5E7] flex items-center justify-center text-[#008069] font-semibold text-[18px] flex-shrink-0">
+                        L
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1">
+                            <span className="text-[16px] font-medium leading-tight truncate">
+                                Laziggy
+                            </span>
+                            <BadgeCheck
+                                className="w-[15px] h-[15px] flex-shrink-0"
+                                fill="white"
+                                style={{ color: "#008069" }}
+                            />
+                        </div>
+                        <div className="text-[12.5px] leading-tight text-white/85">
+                            online
+                        </div>
+                    </div>
+                    <Video className="w-[22px] h-[22px]" strokeWidth={2} />
+                    <Phone className="w-[19px] h-[19px]" strokeWidth={2.2} />
+                    <MoreVertical className="w-[20px] h-[20px] -ml-1" strokeWidth={2} />
+                </div>
+
+                {/* Chat area with doodle background. min-h-0 lets the flex
+                    child shrink so the iPhone aspect-ratio is preserved even
+                    when content would otherwise push the screen taller. */}
+                <div
+                    className="relative px-3 py-3 space-y-1.5 flex-1 min-h-0 overflow-hidden"
+                    style={{
+                        background: "#EFEAE2",
+                        backgroundImage:
+                            "url(\"data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.04' stroke-width='1.2'%3E%3Ccircle cx='40' cy='40' r='12'/%3E%3Cpath d='M70 30 q5 10 0 20 q-5 -10 0 -20z'/%3E%3Crect x='110' y='30' width='14' height='18' rx='1.5'/%3E%3Cpath d='M150 35 l8 -5 l8 5 v18 h-16z'/%3E%3Ccircle cx='200' cy='42' r='8'/%3E%3Cpath d='M225 30 c10 0 10 20 0 20 c-10 0 -10 -20 0 -20z'/%3E%3Cpath d='M30 90 q15 -8 30 0 t30 0'/%3E%3Cpath d='M115 85 l5 8 l-5 8 l-5 -8z'/%3E%3Ccircle cx='150' cy='95' r='6'/%3E%3Cpath d='M180 85 h20 v15 h-20z'/%3E%3Cpath d='M220 95 q-6 -8 0 -16 q6 8 0 16z'/%3E%3Ccircle cx='40' cy='150' r='10'/%3E%3Cpath d='M75 145 c0 -8 14 -8 14 0 c0 8 -14 8 -14 0z'/%3E%3Cpath d='M110 140 l10 0 l5 10 l-10 5 l-10 -5z'/%3E%3Ccircle cx='160' cy='150' r='7'/%3E%3Cpath d='M195 140 q10 5 0 20 q-10 -5 0 -20z'/%3E%3Cpath d='M230 145 h15 v12 h-15z'/%3E%3Cpath d='M30 200 q8 -10 16 0 t16 0'/%3E%3Ccircle cx='90' cy='205' r='8'/%3E%3Cpath d='M125 195 l8 10 l-8 10 l-8 -10z'/%3E%3Cpath d='M155 195 c10 0 10 20 0 20 c-10 0 -10 -20 0 -20z'/%3E%3Crect x='190' y='198' width='14' height='14' rx='2'/%3E%3Ccircle cx='235' cy='205' r='6'/%3E%3Cpath d='M50 250 q5 -8 10 0 q5 -8 10 0'/%3E%3Ccircle cx='110' cy='255' r='9'/%3E%3Cpath d='M150 248 l6 7 l-6 7 l-6 -7z'/%3E%3Cpath d='M185 248 h18 v14 h-18z'/%3E%3Cpath d='M225 255 q-8 -6 0 -14 q8 6 0 14z'/%3E%3C/g%3E%3C/svg%3E\")",
+                        backgroundSize: "280px 280px",
+                    }}
+                >
+                    {/* Date pill */}
+                    <div className="flex justify-center pb-1.5">
+                        <span
+                            className="text-[12.5px] px-2.5 py-[3px] rounded-md text-[#54656F] font-medium"
+                            style={{
+                                background: "#FFFFFFCC",
+                                boxShadow: "0 1px 0.5px rgba(11,20,26,0.13)",
+                            }}
+                        >
+                            TODAY
+                        </span>
+                    </div>
+
+                    {/* Outgoing voice note */}
+                    <WaMessage side="out" time="9:41" tight>
+                        <div className="flex items-center gap-2 py-0.5 min-w-[200px]">
+                            <div className="relative">
+                                <div className="w-9 h-9 rounded-full bg-[#DFE5E7] flex items-center justify-center text-[#54656F] font-semibold text-[13px] flex-shrink-0">
+                                    L
+                                </div>
+                                <Mic
+                                    className="absolute -right-0.5 -bottom-0.5 w-3.5 h-3.5 p-0.5 rounded-full text-white"
+                                    style={{ background: "#00A884" }}
+                                />
+                            </div>
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                    <Play
+                                        className="w-3.5 h-3.5 text-[#54656F] fill-[#54656F] flex-shrink-0"
+                                    />
+                                    <div className="flex-1 flex items-center h-1 rounded-full bg-[#B3BFC4] relative">
+                                        <div
+                                            className="absolute left-0 top-0 h-full rounded-full bg-[#54656F]"
+                                            style={{ width: "0%" }}
+                                        />
+                                        <div
+                                            className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full"
+                                            style={{ background: "#00A884", left: "0%" }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="text-[10.5px] text-[#667781] mt-0.5">
+                                    0:14
+                                </div>
+                            </div>
+                        </div>
+                    </WaMessage>
+
+                    {/* Outgoing text */}
+                    <WaMessage side="out" time="9:41">
+                        ingredients for biryani, kitchen towels, my usual milk
+                    </WaMessage>
+
+                    {/* Incoming reply */}
+                    <WaMessage side="in" time="9:41">
+                        On it. Cart in 22 seconds ↓
+                    </WaMessage>
+
+                    {/* Incoming cart preview */}
+                    <WaMessage side="in" time="9:42">
+                        <div className="-mt-0.5 -mx-0.5">
+                            <div
+                                className="rounded-md overflow-hidden mb-1.5"
+                                style={{ background: "#F5F6F6" }}
+                            >
+                                <div
+                                    className="px-2.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-white"
+                                    style={{ background: "#00A884" }}
+                                >
+                                    Your cart · 11 items
+                                </div>
+                                <ul className="px-2.5 py-2 space-y-1 text-[13px] text-[#3B4A54]">
+                                    {[
+                                        ["Basmati rice (India Gate, 1kg)", "×1"],
+                                        ["Chicken (curry-cut, 500g)", "×1"],
+                                        ["Amul milk, full cream", "×2"],
+                                        ["Kitchen towel roll", "×1"],
+                                    ].map(([item, qty]) => (
+                                        <li
+                                            key={item}
+                                            className="flex items-center justify-between gap-2"
+                                        >
+                                            <span className="flex items-center gap-1.5 min-w-0">
+                                                <Check
+                                                    className="w-3 h-3 flex-shrink-0"
+                                                    style={{ color: "#00A884" }}
+                                                />
+                                                <span className="truncate">{item}</span>
+                                            </span>
+                                            <span className="text-[11px] text-[#667781] flex-shrink-0">
+                                                {qty}
+                                            </span>
+                                        </li>
+                                    ))}
+                                    <li className="text-[12px] text-[#667781] italic">
+                                        + 7 more
+                                    </li>
+                                </ul>
+                                <div
+                                    className="px-2.5 py-2 flex items-center justify-between border-t"
+                                    style={{ borderColor: "#E9EDEF" }}
+                                >
+                                    <span
+                                        className="text-[13px] font-semibold"
+                                        style={{ color: "#008069" }}
+                                    >
+                                        Tap to confirm
+                                    </span>
+                                    <span className="text-[13px] font-semibold text-[#111B21]">
+                                        ₹847
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </WaMessage>
+                </div>
+
+                {/* Input bar */}
+                <div
+                    className="flex items-center gap-2 px-2 py-1.5"
+                    style={{ background: "#F0F2F5" }}
+                >
+                    <div
+                        className="flex-1 flex items-center gap-2 rounded-full px-3 py-2"
+                        style={{ background: "#FFFFFF" }}
+                    >
+                        <Smile className="w-[22px] h-[22px] text-[#54656F]" strokeWidth={1.8} />
+                        <span className="flex-1 text-[15px] text-[#667781]">
+                            Message
+                        </span>
+                        <Paperclip
+                            className="w-[20px] h-[20px] text-[#54656F] -rotate-45"
+                            strokeWidth={1.8}
+                        />
+                        <Camera className="w-[20px] h-[20px] text-[#54656F]" strokeWidth={1.8} />
+                    </div>
+                    <button
+                        type="button"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+                        style={{ background: "#00A884" }}
+                        aria-label="Send voice message"
+                    >
+                        <Mic className="w-[22px] h-[22px]" strokeWidth={2} />
+                    </button>
+                </div>
+
+                    {/* iOS home indicator */}
+                    <div
+                        className="flex justify-center py-1.5"
+                        style={{ background: "#F0F2F5" }}
+                    >
+                        <span
+                            aria-hidden
+                            className="block w-[110px] h-[5px] rounded-full bg-[#111B21]"
+                        />
+                    </div>
+        </IPhone>
+    );
+}
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 
 export default function HomeIndex() {
@@ -151,7 +593,7 @@ export default function HomeIndex() {
 
             {/* ─── Hero ──────────────────────────────────────────── */}
             <section className="px-6 md:px-10 pt-8 md:pt-16 pb-24 md:pb-32 max-w-[1200px] mx-auto w-full">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                     {/* Copy column — 7 cols, offset */}
                     <div className="lg:col-span-7 lg:pt-6">
                         <div
@@ -204,125 +646,14 @@ export default function HomeIndex() {
                         </div>
                     </div>
 
-                    {/* Chat thread column — 5 cols */}
-                    <div className="lg:col-span-5 lg:pl-4">
-                        <div className="relative max-w-[400px] mx-auto lg:mx-0 lg:ml-auto">
-                            {/* Phone-frame-ish container, but no skeuomorphism */}
-                            <div className="rounded-[28px] bg-[color:var(--color-paper-2)]/70 border border-[color:var(--color-brand-border)] p-5 md:p-6">
-                                {/* Thread header */}
-                                <div className="flex items-center justify-between mb-5 pb-4 border-b border-[color:var(--color-brand-border)]">
-                                    <div className="flex items-center gap-2.5">
-                                        <div className="w-8 h-8 rounded-full bg-[color:var(--color-moss)] flex items-center justify-center text-[color:var(--color-paper)] font-display font-semibold text-sm">
-                                            L
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-medium text-[color:var(--color-ink)] leading-tight">
-                                                Laziggy
-                                            </div>
-                                            <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-whatsapp)]">
-                                                online
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <Play className="w-4 h-4 text-[color:var(--color-ink-3)] fill-[color:var(--color-ink-3)]" />
-                                </div>
-
-                                {/* Voice note bubble (inbound from user) */}
-                                <div className="flex flex-col items-end gap-1 mb-4">
-                                    <Bubble variant="in" className="min-w-[200px]">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-[color:var(--color-moss)] flex items-center justify-center text-[color:var(--color-paper)] flex-shrink-0">
-                                                <Mic className="w-3.5 h-3.5" />
-                                            </div>
-                                            <div className="flex-1 flex items-end gap-[2px] h-5">
-                                                {[3, 7, 12, 9, 14, 10, 6, 11, 15, 8, 5, 9, 12, 7, 4].map(
-                                                    (h, i) => (
-                                                        <span
-                                                            key={i}
-                                                            className="w-[2px] rounded-full bg-[color:var(--color-ink-3)]"
-                                                            style={{ height: `${h * 1.2}px` }}
-                                                        />
-                                                    ),
-                                                )}
-                                            </div>
-                                            <span className="font-mono text-[10px] text-[color:var(--color-ink-3)]">
-                                                0:14
-                                            </span>
-                                        </div>
-                                    </Bubble>
-                                    <MetaLine>
-                                        9:42 <CheckCheck className="w-3 h-3 text-[color:var(--color-whatsapp)]" />
-                                    </MetaLine>
-                                </div>
-
-                                {/* User text bubble */}
-                                <div className="flex flex-col items-end gap-1 mb-5">
-                                    <Bubble variant="in" className="max-w-[85%]">
-                                        <p className="text-[15px] leading-snug font-display italic">
-                                            ingredients for biryani, kitchen towels, my usual milk
-                                        </p>
-                                    </Bubble>
-                                    <MetaLine>
-                                        9:42 <CheckCheck className="w-3 h-3 text-[color:var(--color-whatsapp)]" />
-                                    </MetaLine>
-                                </div>
-
-                                {/* Laziggy reply */}
-                                <div className="flex flex-col items-start gap-1 mb-3">
-                                    <Bubble variant="out" className="max-w-[88%]">
-                                        <p className="text-[15px] leading-snug">
-                                            On it. Cart in 22 seconds ↓
-                                        </p>
-                                    </Bubble>
-                                </div>
-
-                                {/* Cart preview (system) */}
-                                <div className="flex flex-col items-start gap-1">
-                                    <Bubble variant="system" className="w-full max-w-[88%]">
-                                        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-ink-3)] mb-2">
-                                            Your cart · 11 items
-                                        </div>
-                                        <ul className="space-y-1.5 text-[13px] text-[color:var(--color-ink-2)]">
-                                            {[
-                                                ["Basmati rice (India Gate, 1kg)", "×1"],
-                                                ["Chicken (curry-cut, 500g)", "×1"],
-                                                ["Amul milk, full cream", "×2"],
-                                                ["Kitchen towel roll", "×1"],
-                                            ].map(([item, qty]) => (
-                                                <li
-                                                    key={item}
-                                                    className="flex items-center justify-between gap-3"
-                                                >
-                                                    <span className="flex items-center gap-2">
-                                                        <Check className="w-3 h-3 text-[color:var(--color-moss)] flex-shrink-0" />
-                                                        {item}
-                                                    </span>
-                                                    <span className="font-mono text-[10px] text-[color:var(--color-ink-3)]">
-                                                        {qty}
-                                                    </span>
-                                                </li>
-                                            ))}
-                                            <li className="text-[12px] text-[color:var(--color-ink-3)] italic pt-1">
-                                                + 7 more
-                                            </li>
-                                        </ul>
-                                        <div className="mt-3 pt-3 border-t border-[color:var(--color-brand-border)] flex items-center justify-between">
-                                            <span className="font-display text-base">Tap to confirm</span>
-                                            <span className="text-xs px-2.5 py-1 rounded-full bg-[color:var(--color-lime)] text-[color:var(--color-ink)] font-medium">
-                                                ₹847
-                                            </span>
-                                        </div>
-                                    </Bubble>
-                                    <MetaLine>9:43 · via Swiggy Instamart</MetaLine>
-                                </div>
-                            </div>
-
-                            {/* Hangs outside the card */}
-                            <div className="absolute -top-3 -right-3 hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[color:var(--color-ink)] text-[color:var(--color-paper)] font-mono text-[10px] uppercase tracking-[0.18em]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--color-lime)]" />
-                                30-sec demo
-                            </div>
-                        </div>
+                    {/* WhatsApp Business chat replica — 5 cols. IPhone is
+                        300px internally so chat content keeps correct
+                        proportions, then visually scaled to 85% via the
+                        component's `scale` prop (applied on the same element
+                        that has explicit width — avoids the chicken-and-egg
+                        layout collapse from a separate scaling wrapper). */}
+                    <div className="lg:col-span-5 flex justify-center">
+                        <WhatsAppDemo />
                     </div>
                 </div>
             </section>
@@ -473,7 +804,7 @@ export default function HomeIndex() {
                         <Reveal key={step.n} slow delay={i * 320}>
                             <div
                                 className={`flex items-start gap-5 md:gap-8 ${
-                                    step.side === "out" ? "md:flex-row-reverse md:text-right" : ""
+                                    step.side === "in" ? "md:flex-row-reverse md:text-right" : ""
                                 }`}
                             >
                                 <div className="flex-shrink-0 font-display font-medium text-[color:var(--color-saffron)] text-4xl md:text-5xl leading-none w-14 md:w-16">
@@ -481,7 +812,7 @@ export default function HomeIndex() {
                                 </div>
                                 <div
                                     className={`flex-1 max-w-[640px] ${
-                                        step.side === "out" ? "md:ml-auto" : ""
+                                        step.side === "in" ? "md:ml-auto" : ""
                                     }`}
                                 >
                                     <Bubble

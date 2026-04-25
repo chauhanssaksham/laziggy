@@ -27,3 +27,4 @@ IGNORED/
 # Local-only docs and AI tooling (keep on disk, don't ship)
 /.claude/
 /DOCS/
+/.firecrawl/
