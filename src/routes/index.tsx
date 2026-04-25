@@ -41,8 +41,8 @@ export default function HomeIndex() {
                         <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-10 leading-relaxed">
                             Tell Laziggy what you want —{" "}
                             <em>
-                                &ldquo;milk, pasta, ingredients for a burger, and my usual
-                                ice-cream.&rdquo;
+                                &ldquo;milk, kitchen towels, ingredients for chicken
+                                biryani, and my usual chocolate.&rdquo;
                             </em>{" "}
                             It curates the cart. You tap confirm. No app, no list, no scrolling.
                         </p>
