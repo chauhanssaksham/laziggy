@@ -33,16 +33,16 @@ export default function HomeIndex() {
                         </div>
 
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.05] mb-6">
-                            Instamart,
+                            Instamart for the
                             <br />
-                            <span className="text-gradient">on WhatsApp.</span>
+                            <span className="text-gradient">super lazy.</span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-10 leading-relaxed">
                             Tell Laziggy what you want —{" "}
                             <em>
-                                &ldquo;milk, pasta, ingredients for a burger, and something for
-                                roaches.&rdquo;
+                                &ldquo;milk, pasta, ingredients for a burger, and my usual
+                                ice-cream.&rdquo;
                             </em>{" "}
                             It curates the cart. You tap confirm. No app, no list, no scrolling.
                         </p>
