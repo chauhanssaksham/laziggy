@@ -25,7 +25,7 @@ import {
     Pencil,
     X,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Reveal } from "@/client/components/ui/Reveal";
 
 // WhatsApp number in international format, no + or dashes.
@@ -341,6 +341,56 @@ function WaMessage({
     );
 }
 
+// WhatsApp typing indicator — incoming bubble with three pulsing dots.
+// Shown before a Laziggy reply lands; mounts at `appearAt` and unmounts at
+// `disappearAt` so the slot fully clears for the actual message. Driven by
+// JS timers (not pure CSS) so the bubble truly leaves the layout instead of
+// just fading — that way the next message takes its place cleanly.
+function WaTyping({
+    appearAt,
+    disappearAt,
+}: {
+    appearAt: number;
+    disappearAt: number;
+}) {
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const t1 = window.setTimeout(() => setVisible(true), appearAt);
+        const t2 = window.setTimeout(() => setVisible(false), disappearAt);
+        return () => {
+            window.clearTimeout(t1);
+            window.clearTimeout(t2);
+        };
+    }, [appearAt, disappearAt]);
+
+    if (!visible) return null;
+
+    return (
+        <div className="flex justify-start wa-appear">
+            <div
+                className="relative rounded-[7.5px] rounded-tl-[0] px-3 py-2.5"
+                style={{
+                    background: WA_INCOMING,
+                    boxShadow: "0 1px 0.5px rgba(11,20,26,0.13)",
+                }}
+            >
+                <WaTail side="left" color={WA_INCOMING} />
+                <div className="flex items-center gap-1">
+                    <span className="wa-typing-dot" style={{ animationDelay: "0s" }} />
+                    <span
+                        className="wa-typing-dot"
+                        style={{ animationDelay: "0.2s" }}
+                    />
+                    <span
+                        className="wa-typing-dot"
+                        style={{ animationDelay: "0.4s" }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 // WhatsApp Business "Interactive Message" — body bubble + a divided stack
 // of reply buttons rendered inside the same bubble container. This is a real
 // WA Business pattern (max 3 reply buttons under text body / header).
@@ -514,7 +564,7 @@ function WhatsAppDemo() {
                     </div>
 
                     {/* Outgoing voice note */}
-                    <WaMessage side="out" time="9:41" tight appearDelay={4200}>
+                    <WaMessage side="out" time="9:41" tight appearDelay={2800}>
                         <div className="flex items-center gap-2 py-0.5 min-w-[200px]">
                             <div className="relative">
                                 <div className="w-9 h-9 rounded-full bg-[#DFE5E7] flex items-center justify-center text-[#54656F] font-semibold text-[13px] flex-shrink-0">
@@ -549,24 +599,30 @@ function WhatsAppDemo() {
                     </WaMessage>
 
                     {/* Outgoing text */}
-                    <WaMessage side="out" time="9:41" appearDelay={5300}>
+                    <WaMessage side="out" time="9:41" appearDelay={3700}>
                         can you place an order for biryani ingredients, kitchen
                         towels, my usual milk
                     </WaMessage>
 
-                    {/* "On it" ack — quick incoming text. ~700ms after the
-                        user message: feels almost instant, like a real bot. */}
-                    <WaMessage side="in" time="9:41" appearDelay={6000}>
+                    {/* Typing indicator before "On it" — short pause (~500ms),
+                        feels like a real bot acknowledging. */}
+                    <WaTyping appearAt={3900} disappearAt={4400} />
+
+                    {/* "On it" ack — quick incoming text. */}
+                    <WaMessage side="in" time="9:41" appearDelay={4400}>
                         On it 🫡
                     </WaMessage>
 
-                    {/* Interactive cart message — body text + reply buttons.
-                        Lands ~3 seconds after "On it", simulating the agent
-                        actually composing the cart against the MCP. */}
+                    {/* Typing indicator before the cart — long pause (~3s),
+                        simulating the agent actually composing the cart
+                        against the MCP. This is the key dramatic beat. */}
+                    <WaTyping appearAt={4900} disappearAt={7400} />
+
+                    {/* Interactive cart message — body text + reply buttons. */}
                     <WaInteractive
                         side="in"
                         time="9:42"
-                        appearDelay={9000}
+                        appearDelay={7400}
                         body={
                             <>
                                 <div className="font-semibold text-[14.5px] text-[#111B21] mb-1">
@@ -726,13 +782,14 @@ export default function HomeIndex() {
                     </div>
 
                     {/* WhatsApp Business chat replica — 5 cols. The phone
-                        column joins the hero stagger as the final beat
-                        (2750ms — one 600ms cadence step after the CTA), then
-                        the chat messages cascade in inside it via their own
-                        wa-appear delays choreographed in WhatsAppDemo. */}
+                        animates in alongside the subhead (1550ms) using the
+                        regular (non-slow) mount-fade-up so it doesn't drag,
+                        then chat messages cascade in inside it. By the time
+                        the user finishes reading the copy, phone is settled
+                        and messages have started landing. */}
                     <div
-                        className="lg:col-span-5 flex justify-center mount-fade-up-slow"
-                        style={{ animationDelay: "2750ms" }}
+                        className="lg:col-span-5 flex justify-center mount-fade-up"
+                        style={{ animationDelay: "1550ms" }}
                     >
                         <WhatsAppDemo />
                     </div>

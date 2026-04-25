@@ -199,6 +199,29 @@
     }
 }
 
+/* WhatsApp typing-indicator dots — three dots that pulse in sequence.
+   Each .wa-typing-dot uses the same keyframe but different animation-delay
+   to stagger them. */
+@keyframes wa-typing-dot {
+    0%, 60%, 100% {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-2px);
+    }
+}
+
+.wa-typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: #8696A0;
+    display: inline-block;
+    animation: wa-typing-dot 1.2s ease-in-out infinite;
+}
+
 /* WhatsApp-style "message arriving" animation — short, snappy. Used for
    chat messages so they pop in like real WA messages, not the slow editorial
    reveal used for body copy. */
