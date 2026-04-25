@@ -713,13 +713,8 @@ export default function HomeIndex() {
                             className="text-lg md:text-xl text-[color:var(--color-ink-2)] max-w-xl mb-10 leading-relaxed mount-fade-up-slow"
                             style={{ animationDelay: "1550ms" }}
                         >
-                            Tell Laziggy what you want —{" "}
-                            <em className="text-[color:var(--color-ink)]">
-                                &ldquo;ingredients for biryani, kitchen towels, my usual
-                                milk.&rdquo;
-                            </em>{" "}
-                            It builds the cart. You tap confirm. The lowest-effort grocery
-                            order possible.
+                            Tell Laziggy what you want — it builds the cart. You tap
+                            confirm. Whatever you need, without the work.
                         </p>
 
                         <div
@@ -828,8 +823,7 @@ export default function HomeIndex() {
                                     className="italic font-medium leading-[1.08]"
                                     style={{ fontSize: "clamp(2.25rem, 6vw, 5rem)" }}
                                 >
-                                    We&rsquo;re building the lowest-effort path to a grocery
-                                    order.
+                                    We&rsquo;re building the laziest way to order anything.
                                 </p>
                             </Reveal>
                         </blockquote>
