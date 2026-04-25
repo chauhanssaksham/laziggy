@@ -921,7 +921,7 @@ export default function HomeIndex() {
 
             {/* ─── To the Builders Club team — Swiggy address ─────── */}
             <section
-                className="relative py-32 md:py-40 overflow-hidden"
+                className="relative py-24 md:py-32 overflow-hidden"
                 style={{
                     background: "var(--color-ink)",
                     color: "var(--color-paper-2)",
@@ -967,8 +967,7 @@ export default function HomeIndex() {
                             <Reveal delay={380}>
                                 <p>
                                     Building a great product used to mean a team and a year
-                                    of engineering. AI has flattened it — anyone with a
-                                    weekend can build a chatbot. Code is becoming a
+                                    of engineering. AI flattened it. Code is becoming a
                                     commodity. The remaining moat is{" "}
                                     <em
                                         className="not-italic font-medium"
@@ -976,8 +975,8 @@ export default function HomeIndex() {
                                     >
                                         clarity and positioning
                                     </em>
-                                    : knowing what to build, why, for whom, and what not to
-                                    build. Whoever has the sharpest{" "}
+                                    : knowing exactly what to build, why, for whom, and what
+                                    not to build. Whoever has the sharpest{" "}
                                     <em
                                         className="not-italic font-medium"
                                         style={{ color: "#FC8019" }}
@@ -990,15 +989,22 @@ export default function HomeIndex() {
 
                             <Reveal delay={520}>
                                 <p>
-                                    Laziggy is a bet on that thesis. One product. One
-                                    channel. One user archetype. No &ldquo;we&rsquo;ll add
-                                    Food next quarter&rdquo; hedging. The clarity is the moat
-                                    — you can read it across this whole page if you scroll
-                                    back up.
+                                    Laziggy is built with that clarity. The lowest-effort
+                                    path to a grocery order — one WhatsApp message in, full
+                                    Instamart cart out. Nothing else. One product, one
+                                    channel, one user.
                                 </p>
                             </Reveal>
 
-                            <Reveal delay={620}>
+                            <Reveal delay={120}>
+                                <p>
+                                    Humans don&rsquo;t just choose lower-effort paths — they
+                                    get hooked on them. Laziggy is a faster door to Swiggy.
+                                    Once the habit forms there, it stays.
+                                </p>
+                            </Reveal>
+
+                            <Reveal delay={120}>
                                 <p className="text-white">
                                     If that&rsquo;s the kind of partner you&rsquo;re looking
                                     for — let&rsquo;s talk.
@@ -1006,8 +1012,8 @@ export default function HomeIndex() {
                             </Reveal>
                         </div>
 
-                        <Reveal delay={760}>
-                            <div className="mt-12 mb-4">
+                        <Reveal delay={120}>
+                            <div className="mt-8 mb-3">
                                 <span
                                     aria-hidden
                                     className="block w-[80px] h-px"
