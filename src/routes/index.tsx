@@ -933,16 +933,6 @@ export default function HomeIndex() {
                     color: "var(--color-paper-2)",
                 }}
             >
-                {/* Subtle Swiggy wordmark in the corner — small, italic, in
-                    their orange. A respectful nod, not a logo placement. */}
-                <div
-                    aria-hidden
-                    className="absolute top-6 right-6 md:top-8 md:right-10 font-display italic text-[13px] md:text-sm select-none"
-                    style={{ color: "#FC8019", opacity: 0.55 }}
-                >
-                    swiggy
-                </div>
-
                 <div className="px-6 md:px-10 max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-3">
                         <Reveal>
@@ -951,9 +941,7 @@ export default function HomeIndex() {
                                     className="w-1.5 h-1.5 rounded-full"
                                     style={{ background: "#FC8019" }}
                                 />
-                                <span style={{ color: "#FC8019" }}>
-                                    To the Builders Club team
-                                </span>
+                                <span style={{ color: "#FC8019" }}>P.S.</span>
                             </div>
                         </Reveal>
                     </div>
@@ -964,7 +952,11 @@ export default function HomeIndex() {
                                 className="font-display font-medium text-white leading-[1.05] tracking-[-0.02em] mb-12"
                                 style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
                             >
-                                To the Builders Club team.
+                                To the{" "}
+                                <span style={{ color: "#FC8019" }}>
+                                    Swiggy Builders Club
+                                </span>{" "}
+                                team.
                             </h2>
                         </Reveal>
 
@@ -1033,11 +1025,6 @@ export default function HomeIndex() {
                             </div>
                         </Reveal>
 
-                        <Reveal delay={900}>
-                            <div className="mt-10">
-                                <WhatsAppCTA size="lg" variant="swiggy" />
-                            </div>
-                        </Reveal>
                     </div>
                 </div>
             </section>
