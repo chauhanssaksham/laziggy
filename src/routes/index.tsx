@@ -12,6 +12,13 @@ export function meta() {
 import { Play, MessageCircle } from "lucide-react";
 import { Reveal } from "@/client/components/ui/Reveal";
 
+// WhatsApp number in international format, no + or dashes (e.g., "919876543210" for an Indian number).
+// During beta this is the founder's personal WhatsApp — replies are manual until the bot is live.
+const WHATSAPP_NUMBER = "919999999999";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    "Hey! Trying Laziggy.",
+)}`;
+
 export default function HomeIndex() {
     return (
         <main className="min-h-screen bg-background text-foreground flex flex-col font-sans relative">
@@ -59,27 +66,21 @@ export default function HomeIndex() {
                             order possible.
                         </p>
 
-                        <form
-                            className="w-full max-w-md mx-auto md:mx-0 flex flex-col sm:flex-row gap-2"
-                            onSubmit={(e) => e.preventDefault()}
+                        <a
+                            href={WHATSAPP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-xl bg-[#25d366] hover:bg-[#1fb558] text-white font-medium text-base md:text-lg transition whitespace-nowrap shadow-sm hover:shadow-md"
                         >
-                            <input
-                                type="email"
-                                required
-                                placeholder="you@example.com"
-                                className="flex-1 px-4 py-3 rounded-lg bg-card border border-border focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                            <MessageCircle
+                                className="w-5 h-5 fill-white"
+                                strokeWidth={0}
                             />
-                            <button
-                                type="submit"
-                                className="px-5 py-3 rounded-lg bg-[#25d366] hover:bg-[#1fb558] text-white font-medium transition flex items-center justify-center gap-2 whitespace-nowrap"
-                            >
-                                <MessageCircle className="w-4 h-4 fill-white" strokeWidth={0} />
-                                Get the WhatsApp number
-                            </button>
-                        </form>
+                            Try Laziggy now
+                        </a>
 
                         <p className="text-xs text-muted-foreground mt-4">
-                            First 500 get lifetime free. We&rsquo;ll text you the moment we launch.
+                            Live in beta · real human replies
                         </p>
                     </div>
 
@@ -239,39 +240,35 @@ export default function HomeIndex() {
             <section className="px-6 py-32 md:py-40 max-w-3xl mx-auto text-center">
                 <Reveal>
                     <h2 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">
-                        Drop your email.
+                        Stop searching.
                     </h2>
                 </Reveal>
                 <Reveal delay={180}>
                     <h2 className="font-display italic font-medium text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-primary mt-2">
-                        We&rsquo;ll do the rest.
+                        Just message Laziggy.
                     </h2>
                 </Reveal>
 
                 <Reveal delay={360}>
-                    <form
-                        className="w-full max-w-md mx-auto flex flex-col sm:flex-row gap-2 mt-14"
-                        onSubmit={(e) => e.preventDefault()}
-                    >
-                        <input
-                            type="email"
-                            required
-                            placeholder="you@example.com"
-                            className="flex-1 px-4 py-3 rounded-lg bg-card border border-border focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
-                        />
-                        <button
-                            type="submit"
-                            className="px-5 py-3 rounded-lg bg-[#25d366] hover:bg-[#1fb558] text-white font-medium transition flex items-center justify-center gap-2 whitespace-nowrap"
+                    <div className="mt-14">
+                        <a
+                            href={WHATSAPP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[#25d366] hover:bg-[#1fb558] text-white font-medium text-base md:text-lg transition whitespace-nowrap shadow-sm hover:shadow-md"
                         >
-                            <MessageCircle className="w-4 h-4 fill-white" strokeWidth={0} />
-                            Get the WhatsApp number
-                        </button>
-                    </form>
+                            <MessageCircle
+                                className="w-5 h-5 fill-white"
+                                strokeWidth={0}
+                            />
+                            Try Laziggy now
+                        </a>
+                    </div>
                 </Reveal>
 
                 <Reveal delay={540}>
                     <p className="text-xs text-muted-foreground mt-4">
-                        First 500 get lifetime free. We&rsquo;ll text you the moment we launch.
+                        Live in beta · real human replies
                     </p>
                 </Reveal>
             </section>
