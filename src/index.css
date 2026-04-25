@@ -199,6 +199,33 @@
     }
 }
 
+/* WhatsApp-style "message arriving" animation — short, snappy. Used for
+   chat messages so they pop in like real WA messages, not the slow editorial
+   reveal used for body copy. */
+@keyframes wa-message-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.wa-appear {
+    opacity: 0;
+    animation: wa-message-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    transform-origin: bottom center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wa-appear {
+        opacity: 1;
+        animation: none;
+    }
+}
+
 /* Slower reveal — for sections where the user's eye is parked watching
    the animation play out (hero, insight). Activate with the `slow` prop on
    the Reveal component, which sets data-reveal-speed="slow". */

@@ -22,6 +22,8 @@ import {
     Paperclip,
     Camera,
     BadgeCheck,
+    Pencil,
+    X,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Reveal } from "@/client/components/ui/Reveal";
@@ -284,12 +286,16 @@ function WaMessage({
     time,
     read = true,
     tight = false,
+    appearDelay,
 }: {
     side: "in" | "out";
     children: ReactNode;
     time: string;
     read?: boolean;
     tight?: boolean;
+    /** When set, the message starts hidden and pops in (WhatsApp style)
+     *  after this many ms. Used to choreograph the hero chat sequence. */
+    appearDelay?: number;
 }) {
     const bg = side === "out" ? WA_OUTGOING : WA_INCOMING;
     const radius =
@@ -297,7 +303,14 @@ function WaMessage({
             ? "rounded-[7.5px] rounded-tr-[0]"
             : "rounded-[7.5px] rounded-tl-[0]";
     return (
-        <div className={`flex ${side === "out" ? "justify-end" : "justify-start"}`}>
+        <div
+            className={`flex ${side === "out" ? "justify-end" : "justify-start"} ${appearDelay !== undefined ? "wa-appear" : ""}`}
+            style={
+                appearDelay !== undefined
+                    ? { animationDelay: `${appearDelay}ms` }
+                    : undefined
+            }
+        >
             <div
                 className={`relative max-w-[88%] ${radius} ${tight ? "px-1.5 pt-1.5 pb-1" : "px-2 pt-1.5 pb-1"}`}
                 style={{
@@ -314,6 +327,85 @@ function WaMessage({
                         {time}
                     </span>
                     {side === "out" && <WaCheck read={read} />}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// WhatsApp Business "Interactive Message" — body bubble + a divided stack
+// of reply buttons rendered inside the same bubble container. This is a real
+// WA Business pattern (max 3 reply buttons under text body / header).
+type WaButton = {
+    label: string;
+    icon?: typeof Check;
+};
+
+function WaInteractive({
+    side,
+    body,
+    buttons,
+    time,
+    read = true,
+    appearDelay,
+}: {
+    side: "in" | "out";
+    body: ReactNode;
+    buttons: WaButton[];
+    time: string;
+    read?: boolean;
+    appearDelay?: number;
+}) {
+    const bg = side === "out" ? WA_OUTGOING : WA_INCOMING;
+    const radius =
+        side === "out"
+            ? "rounded-[7.5px] rounded-tr-[0]"
+            : "rounded-[7.5px] rounded-tl-[0]";
+    return (
+        <div
+            className={`flex ${side === "out" ? "justify-end" : "justify-start"} ${appearDelay !== undefined ? "wa-appear" : ""}`}
+            style={
+                appearDelay !== undefined
+                    ? { animationDelay: `${appearDelay}ms` }
+                    : undefined
+            }
+        >
+            <div
+                className={`relative max-w-[88%] overflow-hidden ${radius}`}
+                style={{
+                    background: bg,
+                    boxShadow: "0 1px 0.5px rgba(11,20,26,0.13)",
+                }}
+            >
+                <WaTail side={side === "out" ? "right" : "left"} color={bg} />
+                {/* Body */}
+                <div className="px-2 pt-1.5 pb-1 text-[14.2px] leading-[19px] text-[#111B21]">
+                    {body}
+                    <div className="flex items-center justify-end gap-1 -mb-0.5 mt-0.5">
+                        <span className="text-[11px] leading-[15px] text-[#667781]">
+                            {time}
+                        </span>
+                        {side === "out" && <WaCheck read={read} />}
+                    </div>
+                </div>
+                {/* Reply button stack */}
+                <div className="bg-white">
+                    {buttons.map((btn, i) => {
+                        const Icon = btn.icon;
+                        return (
+                            <button
+                                key={btn.label}
+                                type="button"
+                                className={`w-full flex items-center justify-center gap-1.5 py-2 text-[14px] font-medium ${i > 0 ? "border-t border-[#E9EDEF]" : ""}`}
+                                style={{ color: "#00A884" }}
+                            >
+                                {Icon && (
+                                    <Icon className="w-[15px] h-[15px]" strokeWidth={2.4} />
+                                )}
+                                {btn.label}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
         </div>
@@ -414,7 +506,7 @@ function WhatsAppDemo() {
                     </div>
 
                     {/* Outgoing voice note */}
-                    <WaMessage side="out" time="9:41" tight>
+                    <WaMessage side="out" time="9:41" tight appearDelay={4200}>
                         <div className="flex items-center gap-2 py-0.5 min-w-[200px]">
                             <div className="relative">
                                 <div className="w-9 h-9 rounded-full bg-[#DFE5E7] flex items-center justify-center text-[#54656F] font-semibold text-[13px] flex-shrink-0">
@@ -449,72 +541,56 @@ function WhatsAppDemo() {
                     </WaMessage>
 
                     {/* Outgoing text */}
-                    <WaMessage side="out" time="9:41">
-                        ingredients for biryani, kitchen towels, my usual milk
+                    <WaMessage side="out" time="9:41" appearDelay={5300}>
+                        can you place an order for biryani ingredients, kitchen
+                        towels, my usual milk
                     </WaMessage>
 
-                    {/* Incoming reply */}
-                    <WaMessage side="in" time="9:41">
-                        On it. Cart in 22 seconds ↓
+                    {/* "On it" ack — quick incoming text. ~700ms after the
+                        user message: feels almost instant, like a real bot. */}
+                    <WaMessage side="in" time="9:41" appearDelay={6000}>
+                        On it 🫡
                     </WaMessage>
 
-                    {/* Incoming cart preview */}
-                    <WaMessage side="in" time="9:42">
-                        <div className="-mt-0.5 -mx-0.5">
-                            <div
-                                className="rounded-md overflow-hidden mb-1.5"
-                                style={{ background: "#F5F6F6" }}
-                            >
-                                <div
-                                    className="px-2.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-white"
-                                    style={{ background: "#00A884" }}
-                                >
-                                    Your cart · 11 items
+                    {/* Interactive cart message — body text + reply buttons.
+                        Lands ~3 seconds after "On it", simulating the agent
+                        actually composing the cart against the MCP. */}
+                    <WaInteractive
+                        side="in"
+                        time="9:42"
+                        appearDelay={9000}
+                        body={
+                            <>
+                                <div className="font-semibold text-[14.5px] text-[#111B21] mb-1">
+                                    Your cart for biryani night
                                 </div>
-                                <ul className="px-2.5 py-2 space-y-1 text-[13px] text-[#3B4A54]">
+                                <div className="space-y-[3px]">
                                     {[
-                                        ["Basmati rice (India Gate, 1kg)", "×1"],
-                                        ["Chicken (curry-cut, 500g)", "×1"],
-                                        ["Amul milk, full cream", "×2"],
-                                        ["Kitchen towel roll", "×1"],
-                                    ].map(([item, qty]) => (
-                                        <li
-                                            key={item}
-                                            className="flex items-center justify-between gap-2"
-                                        >
-                                            <span className="flex items-center gap-1.5 min-w-0">
-                                                <Check
-                                                    className="w-3 h-3 flex-shrink-0"
-                                                    style={{ color: "#00A884" }}
-                                                />
-                                                <span className="truncate">{item}</span>
-                                            </span>
-                                            <span className="text-[11px] text-[#667781] flex-shrink-0">
-                                                {qty}
-                                            </span>
-                                        </li>
+                                        "Basmati rice (India Gate, 1kg)",
+                                        "Chicken curry-cut, 500g",
+                                        "Amul milk, full cream × 2",
+                                        "Kitchen towel rolls × 2",
+                                    ].map((item) => (
+                                        <div key={item} className="text-[13.5px] leading-snug">
+                                            • {item}
+                                        </div>
                                     ))}
-                                    <li className="text-[12px] text-[#667781] italic">
-                                        + 7 more
-                                    </li>
-                                </ul>
-                                <div
-                                    className="px-2.5 py-2 flex items-center justify-between border-t"
-                                    style={{ borderColor: "#E9EDEF" }}
-                                >
-                                    <span
-                                        className="text-[13px] font-semibold"
-                                        style={{ color: "#008069" }}
-                                    >
-                                        Tap to confirm
-                                    </span>
-                                    <span className="text-[13px] font-semibold text-[#111B21]">
-                                        ₹847
-                                    </span>
+                                    <div className="text-[12.5px] text-[#667781] italic">
+                                        + 7 more items
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </WaMessage>
+                                <div className="mt-2 pt-1.5 border-t border-[#E9EDEF] text-[13px] text-[#3B4A54]">
+                                    <span className="font-semibold text-[#111B21]">Total ₹847</span>
+                                    <span className="text-[#667781]"> · ETA 18 min</span>
+                                </div>
+                            </>
+                        }
+                        buttons={[
+                            { label: "Place order", icon: Check },
+                            { label: "Edit cart", icon: Pencil },
+                            { label: "Cancel", icon: X },
+                        ]}
+                    />
                 </div>
 
                 {/* Input bar */}
@@ -646,13 +722,15 @@ export default function HomeIndex() {
                         </div>
                     </div>
 
-                    {/* WhatsApp Business chat replica — 5 cols. IPhone is
-                        300px internally so chat content keeps correct
-                        proportions, then visually scaled to 85% via the
-                        component's `scale` prop (applied on the same element
-                        that has explicit width — avoids the chicken-and-egg
-                        layout collapse from a separate scaling wrapper). */}
-                    <div className="lg:col-span-5 flex justify-center">
+                    {/* WhatsApp Business chat replica — 5 cols. The phone
+                        column joins the hero stagger as the final beat
+                        (2750ms — one 600ms cadence step after the CTA), then
+                        the chat messages cascade in inside it via their own
+                        wa-appear delays choreographed in WhatsAppDemo. */}
+                    <div
+                        className="lg:col-span-5 flex justify-center mount-fade-up-slow"
+                        style={{ animationDelay: "2750ms" }}
+                    >
                         <WhatsAppDemo />
                     </div>
                 </div>
