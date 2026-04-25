@@ -112,20 +112,28 @@ function SectionLabel({ children }: { children: ReactNode }) {
 function WhatsAppCTA({
     label = "Try Laziggy now",
     size = "md",
+    variant = "whatsapp",
 }: {
     label?: string;
     size?: "md" | "lg";
+    /** Visual variant. `swiggy` swaps the green for Swiggy orange and drops
+     *  the green pulse glow — used in the Builders Club address section. */
+    variant?: "whatsapp" | "swiggy";
 }) {
     const sizing =
         size === "lg"
             ? "px-7 py-3.5 text-base gap-2.5"
             : "px-5 py-2.5 text-sm gap-2";
+    const colors =
+        variant === "swiggy"
+            ? "bg-[#FC8019] hover:bg-[#e08217]"
+            : "bg-[color:var(--color-whatsapp)] hover:bg-[color:var(--color-whatsapp-hover)] btn-glow";
     return (
         <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center rounded-full bg-[color:var(--color-whatsapp)] hover:bg-[color:var(--color-whatsapp-hover)] text-white font-medium transition btn-glow ${sizing}`}
+            className={`inline-flex items-center rounded-full text-white font-medium transition ${colors} ${sizing}`}
         >
             <WhatsAppIcon className={size === "lg" ? "w-[18px] h-[18px]" : "w-4 h-4"} />
             {label}
@@ -917,6 +925,123 @@ export default function HomeIndex() {
                 </div>
             </section>
 
+            {/* ─── To the Builders Club team — Swiggy address ─────── */}
+            <section
+                className="relative py-32 md:py-40 overflow-hidden"
+                style={{
+                    background: "var(--color-ink)",
+                    color: "var(--color-paper-2)",
+                }}
+            >
+                {/* Subtle Swiggy wordmark in the corner — small, italic, in
+                    their orange. A respectful nod, not a logo placement. */}
+                <div
+                    aria-hidden
+                    className="absolute top-6 right-6 md:top-8 md:right-10 font-display italic text-[13px] md:text-sm select-none"
+                    style={{ color: "#FC8019", opacity: 0.55 }}
+                >
+                    swiggy
+                </div>
+
+                <div className="px-6 md:px-10 max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <div className="lg:col-span-3">
+                        <Reveal>
+                            <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em]">
+                                <span
+                                    className="w-1.5 h-1.5 rounded-full"
+                                    style={{ background: "#FC8019" }}
+                                />
+                                <span style={{ color: "#FC8019" }}>
+                                    To the Builders Club team
+                                </span>
+                            </div>
+                        </Reveal>
+                    </div>
+
+                    <div className="lg:col-span-9 lg:col-start-4">
+                        <Reveal delay={120}>
+                            <h2
+                                className="font-display font-medium text-white leading-[1.05] tracking-[-0.02em] mb-12"
+                                style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+                            >
+                                To the Builders Club team.
+                            </h2>
+                        </Reveal>
+
+                        {/* Pre-paragraph margin note — small, italic, muted.
+                            Reads as "hey, since you're here, here's a thought"
+                            rather than launching straight into a thesis. */}
+                        <Reveal delay={240}>
+                            <p className="italic text-[14.5px] md:text-[15px] text-[color:var(--color-paper-2)]/55 mb-10">
+                                One thing, while you&rsquo;re here.
+                            </p>
+                        </Reveal>
+
+                        <div className="space-y-6 max-w-[640px] text-[17px] md:text-[18px] leading-[1.65] text-[color:var(--color-paper-2)]/85">
+                            <Reveal delay={380}>
+                                <p>
+                                    Building a great product used to mean a team and a year
+                                    of engineering. AI has flattened it — anyone with a
+                                    weekend can build a chatbot. Code is becoming a
+                                    commodity. The remaining moat is{" "}
+                                    <em
+                                        className="not-italic font-medium"
+                                        style={{ color: "#FC8019" }}
+                                    >
+                                        clarity and positioning
+                                    </em>
+                                    : knowing what to build, why, for whom, and what not to
+                                    build. Whoever has the sharpest{" "}
+                                    <em
+                                        className="not-italic font-medium"
+                                        style={{ color: "#FC8019" }}
+                                    >
+                                        thesis
+                                    </em>{" "}
+                                    wins.
+                                </p>
+                            </Reveal>
+
+                            <Reveal delay={520}>
+                                <p>
+                                    Laziggy is a bet on that thesis. One product. One
+                                    channel. One user archetype. No &ldquo;we&rsquo;ll add
+                                    Food next quarter&rdquo; hedging. The clarity is the moat
+                                    — you can read it across this whole page if you scroll
+                                    back up.
+                                </p>
+                            </Reveal>
+
+                            <Reveal delay={620}>
+                                <p className="text-white">
+                                    If that&rsquo;s the kind of partner you&rsquo;re looking
+                                    for — let&rsquo;s talk.
+                                </p>
+                            </Reveal>
+                        </div>
+
+                        <Reveal delay={760}>
+                            <div className="mt-12 mb-4">
+                                <span
+                                    aria-hidden
+                                    className="block w-[80px] h-px"
+                                    style={{ background: "#FC8019" }}
+                                />
+                            </div>
+                            <div className="font-mono text-[12.5px] tracking-wide text-[color:var(--color-paper-2)]/75">
+                                Saksham Chauhan · +91 78359 91160 · admin@laziggy.in
+                            </div>
+                        </Reveal>
+
+                        <Reveal delay={900}>
+                            <div className="mt-10">
+                                <WhatsAppCTA size="lg" variant="swiggy" />
+                            </div>
+                        </Reveal>
+                    </div>
+                </div>
+            </section>
+
             {/* ─── Final CTA (full-bleed dark moss) ───────────────── */}
             <section className="bg-[color:var(--color-moss)] text-[color:var(--color-paper)] py-28 md:py-40 relative overflow-hidden">
                 {/* Subtle lime arc in the background */}
@@ -964,7 +1089,7 @@ export default function HomeIndex() {
                     © Laziggy · Built for lazy brilliance
                 </div>
                 <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-ink-3)] flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--color-whatsapp)]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FC8019]" />
                     powered by Swiggy Instamart
                 </div>
             </footer>
