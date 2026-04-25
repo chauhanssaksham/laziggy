@@ -9,7 +9,7 @@ export function meta() {
     ];
 }
 
-import { Play } from "lucide-react";
+import { Play, MessageCircle } from "lucide-react";
 import { Reveal } from "@/client/components/ui/Reveal";
 
 export default function HomeIndex() {
@@ -71,14 +71,15 @@ export default function HomeIndex() {
                             />
                             <button
                                 type="submit"
-                                className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
+                                className="px-5 py-3 rounded-lg bg-[#25d366] hover:bg-[#1fb558] text-white font-medium transition flex items-center justify-center gap-2 whitespace-nowrap"
                             >
-                                Get early access
+                                <MessageCircle className="w-4 h-4 fill-white" strokeWidth={0} />
+                                Get the WhatsApp number
                             </button>
                         </form>
 
                         <p className="text-xs text-muted-foreground mt-4">
-                            First 500 sign-ups get lifetime free access. No spam.
+                            First 500 get lifetime free. We&rsquo;ll text you the moment we launch.
                         </p>
                     </div>
 
@@ -177,6 +178,102 @@ export default function HomeIndex() {
                         </div>
                     </Reveal>
                 </div>
+            </section>
+
+            {/* Three steps */}
+            <section className="px-6 py-32 md:py-40 max-w-5xl mx-auto">
+                <Reveal>
+                    <div className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium mb-14">
+                        Three steps
+                    </div>
+                </Reveal>
+
+                <div className="space-y-14 md:space-y-20 max-w-2xl">
+                    <Reveal>
+                        <div>
+                            <h3 className="font-display text-2xl md:text-4xl leading-[1.2] mb-4">
+                                1.{" "}
+                                <em className="text-primary not-italic font-medium">
+                                    Send a message.
+                                </em>
+                            </h3>
+                            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-display">
+                                Type or talk.{" "}
+                                <em>&ldquo;Milk, pasta, the usual snacks.&rdquo;</em> No
+                                formatting.
+                            </p>
+                        </div>
+                    </Reveal>
+
+                    <Reveal delay={180}>
+                        <div>
+                            <h3 className="font-display text-2xl md:text-4xl leading-[1.2] mb-4">
+                                2.{" "}
+                                <em className="text-primary not-italic font-medium">
+                                    The cart appears.
+                                </em>
+                            </h3>
+                            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-display">
+                                Right brands. Right quantities. Under a minute.
+                            </p>
+                        </div>
+                    </Reveal>
+
+                    <Reveal delay={360}>
+                        <div>
+                            <h3 className="font-display text-2xl md:text-4xl leading-[1.2] mb-4">
+                                3.{" "}
+                                <em className="text-primary not-italic font-medium">
+                                    Tap confirm.
+                                </em>
+                            </h3>
+                            <p className="text-muted-foreground text-base md:text-lg leading-relaxed font-display">
+                                One tap. Native Swiggy checkout. No app to install.
+                            </p>
+                        </div>
+                    </Reveal>
+                </div>
+            </section>
+
+            {/* Final CTA */}
+            <section className="px-6 py-32 md:py-40 max-w-3xl mx-auto text-center">
+                <Reveal>
+                    <h2 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">
+                        Drop your email.
+                    </h2>
+                </Reveal>
+                <Reveal delay={180}>
+                    <h2 className="font-display italic font-medium text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-primary mt-2">
+                        We&rsquo;ll do the rest.
+                    </h2>
+                </Reveal>
+
+                <Reveal delay={360}>
+                    <form
+                        className="w-full max-w-md mx-auto flex flex-col sm:flex-row gap-2 mt-14"
+                        onSubmit={(e) => e.preventDefault()}
+                    >
+                        <input
+                            type="email"
+                            required
+                            placeholder="you@example.com"
+                            className="flex-1 px-4 py-3 rounded-lg bg-card border border-border focus:outline-none focus:ring-2 focus:ring-ring text-foreground"
+                        />
+                        <button
+                            type="submit"
+                            className="px-5 py-3 rounded-lg bg-[#25d366] hover:bg-[#1fb558] text-white font-medium transition flex items-center justify-center gap-2 whitespace-nowrap"
+                        >
+                            <MessageCircle className="w-4 h-4 fill-white" strokeWidth={0} />
+                            Get the WhatsApp number
+                        </button>
+                    </form>
+                </Reveal>
+
+                <Reveal delay={540}>
+                    <p className="text-xs text-muted-foreground mt-4">
+                        First 500 get lifetime free. We&rsquo;ll text you the moment we launch.
+                    </p>
+                </Reveal>
             </section>
 
             <footer className="border-t border-border px-6 py-6 text-center text-sm text-muted-foreground">
