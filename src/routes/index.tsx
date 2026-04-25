@@ -12,9 +12,11 @@ export function meta() {
 import { Play, MessageCircle } from "lucide-react";
 import { Reveal } from "@/client/components/ui/Reveal";
 
-// WhatsApp number in international format, no + or dashes (e.g., "919876543210" for an Indian number).
-// During beta this is the founder's personal WhatsApp — replies are manual until the bot is live.
-const WHATSAPP_NUMBER = "919999999999";
+// WhatsApp number in international format, no + or dashes.
+// During beta this is the founder's personal WhatsApp — replies are manual
+// until the bot is live. Swap to a Gupshup-managed business number once
+// Builders Club access lands and the WhatsApp Business API is provisioned.
+const WHATSAPP_NUMBER = "917835991160";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     "Hey! Trying Laziggy.",
 )}`;
