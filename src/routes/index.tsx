@@ -93,6 +93,45 @@ export default function HomeIndex() {
                 </div>
             </section>
 
+            {/* № 01 — The insight */}
+            <section className="px-6 py-24 md:py-32 max-w-2xl mx-auto text-center">
+                <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-12">
+                    № 01
+                </div>
+                <div className="font-display text-2xl md:text-4xl leading-[1.45] space-y-3">
+                    <p>You know what you want before you even open Instamart.</p>
+                    <p className="text-muted-foreground">
+                        But it still takes 5 minutes to build the cart.
+                    </p>
+                    <p>
+                        With <em>Laziggy</em>, you can do it in one message.
+                    </p>
+                </div>
+            </section>
+
+            {/* Manifesto pull-quote */}
+            <section className="px-6 py-20 md:py-28 max-w-3xl mx-auto">
+                <div className="relative">
+                    <div
+                        aria-hidden
+                        className="absolute -top-10 md:-top-16 -left-2 font-display text-7xl md:text-9xl leading-none text-primary/20 select-none pointer-events-none"
+                    >
+                        &ldquo;
+                    </div>
+                    <div className="w-16 h-px bg-border mx-auto mb-10" />
+                    <blockquote className="font-display italic font-medium text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-center">
+                        <p className="mb-4">We&rsquo;re not building a chatbot.</p>
+                        <p>
+                            We&rsquo;re building the lowest-effort path to a grocery order.
+                        </p>
+                    </blockquote>
+                    <div className="w-16 h-px bg-border mx-auto mt-10" />
+                    <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground text-center mt-6">
+                        — Laziggy
+                    </div>
+                </div>
+            </section>
+
             <footer className="border-t border-border px-6 py-6 text-center text-sm text-muted-foreground">
                 © Laziggy · Built for lazy brilliance
             </footer>
