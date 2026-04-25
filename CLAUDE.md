@@ -104,7 +104,6 @@ See `.claude/coding-standards.md` (gitignored, lives on disk) for full rules.
 ## Tech stack
 
 - **Framework:** React Router 7 (Framework mode)
-- **Styling:** Tailwind v4 with editorial cream/copper palette
 - **Hosting:** Vercel (preview + production deploys via GitHub integration)
 - **Observability:** PostHog (client + server), Pino server logs, AsyncLocalStorage-backed request context, HTTP metrics middleware
 - **Data (future):** Supabase (Postgres, RLS, encrypted at rest) for user preferences and conversation state once the bot ships

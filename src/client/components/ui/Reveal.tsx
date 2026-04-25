@@ -4,6 +4,9 @@ type Props = {
     children: ReactNode;
     delay?: number;
     className?: string;
+    /** Use a longer transition duration (for sections where the user's eye
+     *  is parked watching the animation, e.g. hero/insight). */
+    slow?: boolean;
 };
 
 /**
@@ -17,7 +20,7 @@ type Props = {
  * Animation is CSS-driven; this component only flips the data attribute.
  * Styles live in index.css under [data-reveal="pending"] / [data-reveal="visible"].
  */
-export function Reveal({ children, delay = 0, className = "" }: Props) {
+export function Reveal({ children, delay = 0, className = "", slow = false }: Props) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -43,7 +46,7 @@ export function Reveal({ children, delay = 0, className = "" }: Props) {
                     }
                 }
             },
-            { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+            { threshold: 0.3, rootMargin: "0px 0px -18% 0px" },
         );
 
         observer.observe(el);
@@ -51,7 +54,12 @@ export function Reveal({ children, delay = 0, className = "" }: Props) {
     }, []);
 
     return (
-        <div ref={ref} className={className} style={{ transitionDelay: `${delay}ms` }}>
+        <div
+            ref={ref}
+            className={className}
+            data-reveal-speed={slow ? "slow" : undefined}
+            style={{ transitionDelay: `${delay}ms` }}
+        >
             {children}
         </div>
     );

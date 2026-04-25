@@ -6,28 +6,43 @@
 @theme {
     --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     --font-display: "Fraunces", Georgia, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
 
-    --color-brand-bg: #faf8f5;
-    --color-brand-surface: #ffffff;
-    --color-brand-surface-2: #f0ede6;
-    --color-brand-border: rgba(0, 0, 0, 0.08);
-    --color-brand-text: #222222;
-    --color-brand-text-muted: #5a4a3a;
+    /* Editorial paper + ink palette. See Design.md. */
+    --color-paper: #f2eee5;
+    --color-paper-2: #e8e2d5;
+    --color-ink: #0e0e0c;
+    --color-ink-2: #3a3833;
+    --color-ink-3: #7a766e;
+    --color-chalk: #ffffff;
 
-    --color-brand-accent: #b87333;
-    --color-brand-accent-muted: #8f5a27;
+    --color-moss: #0e3b2c;
+    --color-moss-2: #1a5740;
+    --color-lime: #d8f26a;
+    --color-whatsapp: #25d366;
+    --color-whatsapp-hover: #1ea356;
+    --color-saffron: #e89b4c;
+
+    --color-brand-bg: var(--color-paper);
+    --color-brand-surface: var(--color-chalk);
+    --color-brand-surface-2: var(--color-paper-2);
+    --color-brand-border: rgba(14, 14, 12, 0.1);
+    --color-brand-text: var(--color-ink);
+    --color-brand-text-muted: var(--color-ink-2);
+
+    --color-brand-accent: var(--color-moss);
+    --color-brand-accent-muted: var(--color-moss-2);
+    --color-brand-accent-bright: var(--color-lime);
     --color-brand-destructive: #c13515;
 
-    --color-brand-accent-bright: #d18b4a;
-
-    --color-glow-1: rgba(184, 115, 51, 0.2);
-    --color-glow-2: rgba(184, 115, 51, 0.15);
-    --color-glow-3: rgba(184, 115, 51, 0.1);
+    --color-glow-1: rgba(37, 211, 102, 0.28);
+    --color-glow-2: rgba(37, 211, 102, 0.18);
+    --color-glow-3: rgba(37, 211, 102, 0.1);
 
     --color-brand-accent-bright-subtle: color-mix(in srgb, var(--color-brand-accent-bright) 10%, transparent);
     --color-brand-accent-muted-subtle: color-mix(in srgb, var(--color-brand-accent-muted) 10%, transparent);
@@ -147,6 +162,52 @@
     }
 }
 
+/* Mount-time fade-up — used for above-the-fold hero elements where the
+   scroll-based Reveal would flicker. Pure CSS, no JS state flip.
+   Opacity and transform use different easings: opacity is near-linear so the
+   fade-in takes the full duration (otherwise easeOutExpo front-loads it and
+   the element appears to pop in before settling), while transform stays on
+   the Apple-style easeOutExpo for the gentle drift into final position. */
+@keyframes mount-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes mount-up {
+    from { transform: translateY(32px); }
+    to { transform: translateY(0); }
+}
+
+.mount-fade-up {
+    opacity: 0;
+    animation:
+        mount-fade 990ms linear both,
+        mount-up 2200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mount-fade-up-slow {
+    opacity: 0;
+    animation:
+        mount-fade 1300ms linear both,
+        mount-up 2900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mount-fade-up,
+    .mount-fade-up-slow {
+        opacity: 1;
+        animation: none;
+    }
+}
+
+/* Slower reveal — for sections where the user's eye is parked watching
+   the animation play out (hero, insight). Activate with the `slow` prop on
+   the Reveal component, which sets data-reveal-speed="slow". */
+[data-reveal-speed="slow"] {
+    transition:
+        opacity 1300ms linear,
+        transform 2900ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
 @keyframes demo-scale-up {
     from {
         opacity: 0;
@@ -186,15 +247,49 @@
 }
 
 .text-gradient {
+    color: var(--color-moss);
+}
+
+/* Bubble tail — pure CSS triangle, positioned by parent. */
+.bubble-tail-out::after {
+    content: "";
+    position: absolute;
+    left: -6px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 12px solid var(--color-moss);
+}
+.bubble-tail-in::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid var(--color-chalk);
+}
+
+.bubble-shadow {
+    box-shadow:
+        rgba(14, 14, 12, 0.04) 0px 1px 2px,
+        rgba(14, 14, 12, 0.06) 0px 6px 18px -8px;
+}
+
+/* Lime highlight as inline-painted background — quick magazine-y hit. */
+.lime-highlight {
     background: linear-gradient(
-        135deg,
-        var(--color-brand-accent-muted) 0%,
-        var(--color-brand-accent) 50%,
-        var(--color-brand-accent-bright) 100%
+        180deg,
+        transparent 55%,
+        var(--color-lime) 55%,
+        var(--color-lime) 92%,
+        transparent 92%
     );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    padding: 0 0.05em;
 }
 
 .bg-gradient-brand {
@@ -284,10 +379,10 @@
    On client mount, JS sets pending → observer flips to visible on intersection. */
 [data-reveal="pending"] {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(40px);
     transition:
-        opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 990ms linear,
+        transform 2200ms cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 
@@ -295,8 +390,8 @@
     opacity: 1;
     transform: translateY(0);
     transition:
-        opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 990ms linear,
+        transform 2200ms cubic-bezier(0.16, 1, 0.3, 1);
     will-change: auto;
 }
 
