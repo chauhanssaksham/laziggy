@@ -13,7 +13,17 @@ import { Play } from "lucide-react";
 
 export default function HomeIndex() {
     return (
-        <main className="min-h-screen bg-background text-foreground flex flex-col font-sans">
+        <main className="min-h-screen bg-background text-foreground flex flex-col font-sans relative">
+            {/* Paper grain overlay — adds subtle texture to the cream background */}
+            <div
+                aria-hidden
+                className="pointer-events-none fixed inset-0 z-[60] opacity-[0.04] mix-blend-multiply"
+                style={{
+                    backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                }}
+            />
+
             <nav className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto w-full">
                 <div className="text-xl font-display font-semibold tracking-tight">Laziggy</div>
                 <a
@@ -94,40 +104,81 @@ export default function HomeIndex() {
             </section>
 
             {/* № 01 — The insight */}
-            <section className="px-6 py-24 md:py-32 max-w-2xl mx-auto text-center">
-                <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-12">
-                    № 01
+            <section className="relative px-6 py-32 md:py-40 max-w-5xl mx-auto overflow-hidden">
+                {/* Ghost "5" — huge editorial numeral floating in the background */}
+                <div
+                    aria-hidden
+                    className="absolute -right-8 md:-right-16 top-1/2 -translate-y-1/2 font-display italic font-medium leading-none pointer-events-none select-none"
+                    style={{
+                        fontSize: "clamp(20rem, 50vw, 40rem)",
+                        color: "color-mix(in srgb, var(--color-brand-accent) 6%, transparent)",
+                    }}
+                >
+                    5
                 </div>
-                <div className="font-display text-2xl md:text-4xl leading-[1.45] space-y-3">
-                    <p>You know what you want before you even open Instamart.</p>
-                    <p className="text-muted-foreground">
-                        But it still takes 5 minutes to build the cart.
+
+                <div className="relative max-w-2xl">
+                    <div className="flex items-center gap-3 mb-12">
+                        <span className="w-10 h-px bg-primary" />
+                        <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium">
+                            № 01
+                        </span>
+                    </div>
+
+                    <p className="font-display text-3xl md:text-5xl leading-[1.15] tracking-tight mb-12">
+                        You know what you want before you{" "}
+                        <em className="text-primary not-italic font-medium">even</em>{" "}
+                        open Instamart.
                     </p>
-                    <p>
-                        With <em>Laziggy</em>, you can do it in one message.
+
+                    <p className="font-display italic text-xl md:text-2xl text-muted-foreground leading-relaxed mb-12 pl-6 border-l-2 border-primary/30">
+                        But it still takes{" "}
+                        <span className="not-italic font-semibold text-foreground tracking-tight">
+                            5 minutes
+                        </span>{" "}
+                        to build the cart.
+                    </p>
+
+                    <p className="font-display text-2xl md:text-4xl leading-[1.2]">
+                        With{" "}
+                        <em className="text-primary font-medium">Laziggy</em>, you
+                        can do it in <em className="font-medium">one message</em>.
                     </p>
                 </div>
             </section>
 
             {/* Manifesto pull-quote */}
-            <section className="px-6 py-20 md:py-28 max-w-3xl mx-auto">
-                <div className="relative">
-                    <div
-                        aria-hidden
-                        className="absolute -top-10 md:-top-16 -left-2 font-display text-7xl md:text-9xl leading-none text-primary/20 select-none pointer-events-none"
-                    >
-                        &ldquo;
+            <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto">
+                <div className="relative pl-8 md:pl-14 border-l border-primary/40">
+                    <div className="flex items-center gap-3 mb-10">
+                        <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium">
+                            The manifesto
+                        </span>
+                        <span className="text-primary/60 text-lg leading-none">❦</span>
                     </div>
-                    <div className="w-16 h-px bg-border mx-auto mb-10" />
-                    <blockquote className="font-display italic font-medium text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-center">
-                        <p className="mb-4">We&rsquo;re not building a chatbot.</p>
-                        <p>
+
+                    <blockquote className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.12] tracking-tight">
+                        <p className="mb-6">
+                            We&rsquo;re not building a{" "}
+                            <span className="relative inline-block text-muted-foreground">
+                                <span>chatbot</span>
+                                <span
+                                    aria-hidden
+                                    className="absolute left-0 right-0 top-[55%] h-[3px] bg-primary/70 rotate-[-2deg] origin-center"
+                                />
+                            </span>
+                            .
+                        </p>
+                        <p className="italic font-medium">
                             We&rsquo;re building the lowest-effort path to a grocery order.
                         </p>
                     </blockquote>
-                    <div className="w-16 h-px bg-border mx-auto mt-10" />
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground text-center mt-6">
-                        — Laziggy
+
+                    <div className="mt-12 flex items-center gap-3">
+                        <span className="w-10 h-px bg-border" />
+                        <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
+                            Laziggy
+                        </span>
                     </div>
                 </div>
             </section>
