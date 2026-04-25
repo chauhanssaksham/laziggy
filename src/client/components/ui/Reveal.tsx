@@ -46,12 +46,8 @@ export function Reveal({ children, delay = 0, className = "", slow = false }: Pr
                     }
                 }
             },
-            // Pre-trigger: fire when the element is still 250px BELOW the
-            // viewport bottom. By the time the user scrolls down enough that
-            // the element is actually visible, it's already mid-animation
-            // (or fully landed). Eliminates the "scrolled to it but it's
-            // still empty" feel on tall sections.
-            { threshold: 0, rootMargin: "0px 0px 250px 0px" },
+            // Fires when any pixel of the element enters the viewport.
+            { threshold: 0, rootMargin: "0px" },
         );
 
         observer.observe(el);
