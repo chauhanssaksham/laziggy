@@ -849,7 +849,7 @@ export default function HomeIndex() {
             </section>
 
             {/* ─── Manifesto (cream, big quote) ───────────────────── */}
-            <section className="px-6 md:px-10 py-24 md:py-36 max-w-[1200px] mx-auto">
+            <section className="px-6 md:px-10 pt-24 md:pt-36 pb-20 md:pb-28 max-w-[1200px] mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-3">
                         <Reveal slow>
@@ -898,7 +898,14 @@ export default function HomeIndex() {
             </section>
 
             {/* ─── Three steps (chat-bubble alternating) ──────────── */}
-            <section className="px-6 md:px-10 py-24 md:py-32 max-w-[1200px] mx-auto">
+            <section
+                className="bg-[color:var(--color-paper-2)]"
+                style={{
+                    // Bleed past the page's max-width so the bg fills full
+                    // width even though the section's content is constrained.
+                }}
+            >
+                <div className="px-6 md:px-10 pt-20 md:pt-28 pb-24 md:pb-32 max-w-[1200px] mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16">
                     <div className="lg:col-span-3">
                         <Reveal slow>
@@ -973,6 +980,7 @@ export default function HomeIndex() {
                             </div>
                         </Reveal>
                     ))}
+                </div>
                 </div>
             </section>
 
