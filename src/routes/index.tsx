@@ -87,11 +87,9 @@ export default function HomeIndex() {
                             href={WHATSAPP_URL}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-3 pl-5 pr-6 py-3 rounded-full bg-foreground text-background font-medium text-[15px] transition hover:bg-foreground/85"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25d366] hover:bg-[#1ea356] text-white text-sm font-medium transition"
                         >
-                            <span className="grid place-items-center w-7 h-7 rounded-full bg-[#25d366] text-white">
-                                <WhatsAppIcon className="w-3.5 h-3.5" />
-                            </span>
+                            <WhatsAppIcon className="w-4 h-4" />
                             Try Laziggy now
                         </a>
 
@@ -271,11 +269,9 @@ export default function HomeIndex() {
                             href={WHATSAPP_URL}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-3 pl-5 pr-7 py-3.5 rounded-full bg-foreground text-background font-medium text-base transition hover:bg-foreground/85"
+                            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#25d366] hover:bg-[#1ea356] text-white font-medium text-base transition"
                         >
-                            <span className="grid place-items-center w-8 h-8 rounded-full bg-[#25d366] text-white">
-                                <WhatsAppIcon className="w-4 h-4" />
-                            </span>
+                            <WhatsAppIcon className="w-[18px] h-[18px]" />
                             Try Laziggy now
                         </a>
                     </div>
