@@ -9,6 +9,8 @@ export function meta() {
     ];
 }
 
+import { Play } from "lucide-react";
+
 export default function HomeIndex() {
     return (
         <main className="min-h-screen bg-background text-foreground flex flex-col font-sans">
@@ -22,7 +24,7 @@ export default function HomeIndex() {
                 </a>
             </nav>
 
-            <section className="flex-1 flex flex-col items-center justify-center px-6 py-20 max-w-3xl mx-auto text-center">
+            <section className="flex-1 flex flex-col items-center justify-center px-6 py-16 max-w-3xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-10 px-3 py-1 rounded-full border border-border">
                     Coming soon · Early access
                 </div>
@@ -41,6 +43,26 @@ export default function HomeIndex() {
                     </em>{" "}
                     It curates the cart. You tap confirm. No app, no list, no scrolling.
                 </p>
+
+                {/* Demo video placeholder — replace with <video> once recorded */}
+                <div className="mb-10 w-full max-w-[280px]">
+                    <div
+                        className="relative rounded-2xl overflow-hidden card-glow bg-gradient-brand-subtle border border-border"
+                        style={{ aspectRatio: "9 / 16" }}
+                    >
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6">
+                            <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center btn-glow">
+                                <Play className="w-7 h-7 text-primary-foreground fill-primary-foreground ml-0.5" />
+                            </div>
+                            <div className="text-center">
+                                <div className="text-foreground font-medium mb-1">Watch the demo</div>
+                                <div className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                                    30 sec · coming this week
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <form
                     className="w-full max-w-md flex flex-col sm:flex-row gap-2"
@@ -61,7 +83,7 @@ export default function HomeIndex() {
                 </form>
 
                 <p className="text-xs text-muted-foreground mt-4">
-                    No spam. One email when we launch.
+                    First 500 sign-ups get lifetime free access. No spam.
                 </p>
             </section>
 
