@@ -10,6 +10,7 @@ export function meta() {
 }
 
 import { Play } from "lucide-react";
+import { Reveal } from "@/client/components/ui/Reveal";
 
 export default function HomeIndex() {
     return (
@@ -103,83 +104,78 @@ export default function HomeIndex() {
                 </div>
             </section>
 
-            {/* № 01 — The insight */}
-            <section className="relative px-6 py-32 md:py-40 max-w-5xl mx-auto overflow-hidden">
-                {/* Ghost "5" — huge editorial numeral floating in the background */}
-                <div
-                    aria-hidden
-                    className="absolute -right-8 md:-right-16 top-1/2 -translate-y-1/2 font-display italic font-medium leading-none pointer-events-none select-none"
-                    style={{
-                        fontSize: "clamp(20rem, 50vw, 40rem)",
-                        color: "color-mix(in srgb, var(--color-brand-accent) 6%, transparent)",
-                    }}
-                >
-                    5
-                </div>
+            {/* The insight */}
+            <section className="px-6 py-32 md:py-40 max-w-5xl mx-auto">
+                <div className="max-w-2xl">
+                    <Reveal>
+                        <p className="font-display text-3xl md:text-5xl leading-[1.15] tracking-tight mb-12">
+                            You know what you want before you{" "}
+                            <em className="text-primary not-italic font-medium">even</em>{" "}
+                            open Instamart.
+                        </p>
+                    </Reveal>
 
-                <div className="relative max-w-2xl">
-                    <div className="flex items-center gap-3 mb-12">
-                        <span className="w-10 h-px bg-primary" />
-                        <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium">
-                            № 01
-                        </span>
-                    </div>
+                    <Reveal delay={180}>
+                        <p className="font-display italic text-xl md:text-2xl text-muted-foreground leading-relaxed mb-12 pl-6 border-l-2 border-primary/30">
+                            But it still takes{" "}
+                            <span className="not-italic font-semibold text-foreground tracking-tight">
+                                5 minutes
+                            </span>{" "}
+                            to build the cart.
+                        </p>
+                    </Reveal>
 
-                    <p className="font-display text-3xl md:text-5xl leading-[1.15] tracking-tight mb-12">
-                        You know what you want before you{" "}
-                        <em className="text-primary not-italic font-medium">even</em>{" "}
-                        open Instamart.
-                    </p>
-
-                    <p className="font-display italic text-xl md:text-2xl text-muted-foreground leading-relaxed mb-12 pl-6 border-l-2 border-primary/30">
-                        But it still takes{" "}
-                        <span className="not-italic font-semibold text-foreground tracking-tight">
-                            5 minutes
-                        </span>{" "}
-                        to build the cart.
-                    </p>
-
-                    <p className="font-display text-2xl md:text-4xl leading-[1.2]">
-                        With{" "}
-                        <em className="text-primary font-medium">Laziggy</em>, you
-                        can do it in <em className="font-medium">one message</em>.
-                    </p>
+                    <Reveal delay={360}>
+                        <p className="font-display text-2xl md:text-4xl leading-[1.2]">
+                            With <em className="text-primary font-medium">Laziggy</em>, you
+                            can do it in <em className="font-medium">one message</em>.
+                        </p>
+                    </Reveal>
                 </div>
             </section>
 
             {/* Manifesto pull-quote */}
             <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto">
                 <div className="relative pl-8 md:pl-14 border-l border-primary/40">
-                    <div className="flex items-center gap-3 mb-10">
-                        <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium">
-                            The manifesto
-                        </span>
-                        <span className="text-primary/60 text-lg leading-none">❦</span>
-                    </div>
+                    <Reveal>
+                        <div className="flex items-center gap-3 mb-10">
+                            <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium">
+                                The manifesto
+                            </span>
+                            <span className="text-primary/60 text-lg leading-none">❦</span>
+                        </div>
+                    </Reveal>
 
                     <blockquote className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.12] tracking-tight">
-                        <p className="mb-6">
-                            We&rsquo;re not building a{" "}
-                            <span className="relative inline-block text-muted-foreground">
-                                <span>chatbot</span>
-                                <span
-                                    aria-hidden
-                                    className="absolute left-0 right-0 top-[55%] h-[3px] bg-primary/70 rotate-[-2deg] origin-center"
-                                />
-                            </span>
-                            .
-                        </p>
-                        <p className="italic font-medium">
-                            We&rsquo;re building the lowest-effort path to a grocery order.
-                        </p>
+                        <Reveal delay={180}>
+                            <p className="mb-6">
+                                We&rsquo;re not building a{" "}
+                                <span className="relative inline-block text-muted-foreground">
+                                    <span>chatbot</span>
+                                    <span
+                                        aria-hidden
+                                        className="absolute left-0 right-0 top-[55%] h-[3px] bg-primary/70 rotate-[-2deg] origin-center"
+                                    />
+                                </span>
+                                .
+                            </p>
+                        </Reveal>
+                        <Reveal delay={360}>
+                            <p className="italic font-medium">
+                                We&rsquo;re building the lowest-effort path to a grocery
+                                order.
+                            </p>
+                        </Reveal>
                     </blockquote>
 
-                    <div className="mt-12 flex items-center gap-3">
-                        <span className="w-10 h-px bg-border" />
-                        <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-                            Laziggy
-                        </span>
-                    </div>
+                    <Reveal delay={540}>
+                        <div className="mt-12 flex items-center gap-3">
+                            <span className="w-10 h-px bg-border" />
+                            <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
+                                Laziggy
+                            </span>
+                        </div>
+                    </Reveal>
                 </div>
             </section>
 

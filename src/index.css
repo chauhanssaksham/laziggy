@@ -278,3 +278,32 @@
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
+
+/* Scroll-triggered fade-up reveal — paired with the <Reveal> component.
+   Server-rendered HTML has no data-reveal attribute (visible for no-JS users).
+   On client mount, JS sets pending → observer flips to visible on intersection. */
+[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+[data-reveal="visible"] {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
