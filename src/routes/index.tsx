@@ -814,10 +814,13 @@ export default function HomeIndex() {
                                 className="font-display font-medium leading-[1.05] tracking-[-0.02em] mb-16 md:mb-20"
                                 style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
                             >
+                                Customers{" "}
                                 <em className="italic font-medium text-[color:var(--color-lime)]">
-                                    Before you even open
+                                    already know
                                 </em>{" "}
-                                Instamart, you already know what you want.
+                                what they want to order before they open
+                                Instamart. Putting it all in the cart still
+                                takes time.
                             </p>
                         </Reveal>
 
@@ -953,7 +956,7 @@ export default function HomeIndex() {
                                 className="font-display leading-[1.05] tracking-[-0.02em]"
                                 style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
                             >
-                                Three steps. None of them you.
+                                Three steps. All super lazy.
                             </p>
                         </Reveal>
                     </div>
